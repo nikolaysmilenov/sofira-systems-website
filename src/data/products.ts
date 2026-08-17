@@ -97,6 +97,18 @@ export const products: Product[] = [
         title: "Контрол и сигурност",
         description: "Роли, права, одитен журнал и изолация по организация.",
       },
+      {
+        title: "Работни процеси",
+        description:
+          "Модулът е в навигацията на приложението, но още не е готов за работа.",
+        state: "upcoming",
+      },
+      {
+        title: "Отчети",
+        description:
+          "Модулът е в навигацията на приложението, но още не е готов за работа.",
+        state: "upcoming",
+      },
     ],
     benefits: [
       "Една система за основните HR операции, вместо разпръснати файлове и процеси.",
@@ -106,7 +118,13 @@ export const products: Product[] = [
       "Десктоп приложение, което се инсталира на Windows и се обновява централно.",
     ],
     visuals: {
-      screenshots: [],
+      cover: "/images/products/hr-hub-360/tablo.webp",
+      screenshots: [
+        "/images/products/hr-hub-360/tablo.webp",
+        "/images/products/hr-hub-360/sluzhiteli.webp",
+        "/images/products/hr-hub-360/dogovori.webp",
+        "/images/products/hr-hub-360/prisastviya.webp",
+      ],
     },
     cta: {
       details: ctaCopy.viewProduct,

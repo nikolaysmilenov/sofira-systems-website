@@ -1,7 +1,8 @@
+import { ProductStatusBadge } from "@/components/products/product-status-badge";
+import { ProductScreenshot } from "@/components/products/product-screenshot";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
-import { ProductStatusBadge } from "@/components/products/product-status-badge";
-import { HrHubShowcase } from "@/components/products/hr-hub-showcase";
+import { hrHubDashboard } from "@/data/hr-hub-screens";
 import { ctaCopy } from "@/data/labels";
 import { featuredProduct, getProductInquireHref } from "@/data/products";
 
@@ -43,12 +44,17 @@ export function ProductFeature() {
             </div>
           </div>
           <p className="max-w-md text-sm leading-relaxed text-subtle lg:text-right">
-            Изгледите по-долу следват реалната навигация на HR HUB 360. Не са
-            снимки от инсталираното приложение.
+            Екранът е от реалното приложение. Данните са демонстрационни, не от
+            клиентска организация.
           </p>
         </div>
         <div className="mt-10">
-          <HrHubShowcase />
+          <ProductScreenshot
+            src={hrHubDashboard.src}
+            alt={hrHubDashboard.alt}
+            caption={hrHubDashboard.caption}
+            sizes="(max-width: 1024px) 100vw, 1100px"
+          />
         </div>
       </Container>
     </section>
