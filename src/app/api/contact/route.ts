@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { sendContactEmail } from "@/lib/contact-mail";
 import { rateLimit } from "@/lib/rate-limit";
 import {
   isContactDeliveryConfigured,
@@ -12,6 +13,16 @@ const RATE_WINDOW_MS = 60_000;
 const jsonHeaders = {
   "Cache-Control": "no-store",
 };
+
+function sendFailure() {
+  return NextResponse.json(
+    {
+      status: "error",
+      message: "Възникна проблем при изпращането. Моля, опитайте отново.",
+    },
+    { status: 500, headers: jsonHeaders },
+  );
+}
 
 export function GET() {
   return NextResponse.json(
@@ -85,35 +96,24 @@ export async function POST(request: Request) {
     }
 
     if (result.isSpam) {
-      return NextResponse.json(
-        { status: "unconfigured" },
-        { status: 503, headers: jsonHeaders },
-      );
+      return NextResponse.json({ status: "sent" }, { status: 200, headers: jsonHeaders });
     }
 
     if (!isContactDeliveryConfigured()) {
-      return NextResponse.json(
-        {
-          status: "unconfigured",
-          message:
-            "Формата е валидна, но все още няма конфигурирана услуга за изпращане.",
-        },
-        { status: 503, headers: jsonHeaders },
-      );
+      return sendFailure();
     }
 
-    return NextResponse.json(
-      {
-        status: "error",
-        message: "Съобщението не може да бъде изпратено в момента.",
-      },
-      { status: 503, headers: jsonHeaders },
-    );
+    const delivered = await sendContactEmail(result.data);
+    if (!delivered.ok) {
+      return sendFailure();
+    }
+
+    return NextResponse.json({ status: "sent" }, { status: 200, headers: jsonHeaders });
   } catch {
     return NextResponse.json(
       {
         status: "error",
-        message: "Възникна грешка при обработка на заявката.",
+        message: "Възникна проблем при изпращането. Моля, опитайте отново.",
       },
       { status: 500, headers: jsonHeaders },
     );

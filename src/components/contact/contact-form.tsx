@@ -15,7 +15,6 @@ type FormStatus =
   | { type: "idle" }
   | { type: "submitting" }
   | { type: "success" }
-  | { type: "unconfigured" }
   | { type: "error"; message: string };
 
 const fields: Array<{
@@ -78,33 +77,20 @@ export function ContactForm({ defaultInquiry = "" }: ContactFormProps) {
       const payload: unknown = await response.json();
       const responseStatus = getResponseStatus(payload);
 
-      if (responseStatus === "unconfigured") {
-        setStatus({ type: "unconfigured" });
-        return;
-      }
-
       if (response.ok && responseStatus === "sent") {
         setValues(emptyContactInput());
         setStatus({ type: "success" });
         return;
       }
 
-      if (!response.ok) {
-        setStatus({
-          type: "error",
-          message: "Съобщението не беше изпратено. Моля, опитайте отново.",
-        });
-        return;
-      }
-
       setStatus({
         type: "error",
-        message: "Съобщението не може да бъде изпратено, докато не бъде свързана пощенска услуга.",
+        message: "Възникна проблем при изпращането. Моля, опитайте отново.",
       });
     } catch {
       setStatus({
         type: "error",
-        message: "Възникна мрежова грешка. Проверете връзката и опитайте отново.",
+        message: "Възникна проблем при изпращането. Моля, опитайте отново.",
       });
     }
   }
@@ -271,14 +257,7 @@ export function ContactForm({ defaultInquiry = "" }: ContactFormProps) {
 
       {status.type === "success" ? (
         <p className="mt-5 rounded-md border border-cyan/30 bg-electric/10 px-4 py-3 text-sm text-foreground" role="status">
-          Съобщението беше изпратено. Ще се свържем с вас.
-        </p>
-      ) : null}
-
-      {status.type === "unconfigured" ? (
-        <p className="mt-5 rounded-md border border-cyan/30 bg-electric/10 px-4 py-3 text-sm text-foreground" role="status">
-          Формата е проверена успешно. Изпращането на съобщения ще бъде активирано,
-          след като бъде свързана пощенска услуга.
+          Запитването беше изпратено успешно. Ще се свържем с вас.
         </p>
       ) : null}
 

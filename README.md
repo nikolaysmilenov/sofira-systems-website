@@ -32,13 +32,13 @@ CONTACT_FROM_EMAIL=
 CONTACT_TO_EMAIL=
 ```
 
-`RESEND_API_KEY`, `CONTACT_FROM_EMAIL` и `CONTACT_TO_EMAIL` се използват само на сървъра. Формата валидира данните и не твърди, че съобщението е изпратено, докато доставчикът не бъде свързан.
+`RESEND_API_KEY`, `CONTACT_FROM_EMAIL` и `CONTACT_TO_EMAIL` се използват само на сървъра за изпращане на запитвания от контактната форма. Не ги префиксирайте с `NEXT_PUBLIC_`.
 
 ## Публикуване
 
 Проектът е Next.js приложение и е готов за хостинг на Vercel. Официалният домейн е [sofirasystems.com](https://sofirasystems.com).
 
-Преди публикуване задайте `NEXT_PUBLIC_SITE_URL=https://sofirasystems.com`. Имейл изпращането остава изключено, докато не се попълнят сървърните променливи за контакт. DNS и връзката на домейна се правят в хостинг акаунта.
+Преди публикуване задайте `NEXT_PUBLIC_SITE_URL=https://sofirasystems.com` и сървърните променливи за Resend. DNS и връзката на домейна се правят в хостинг акаунта.
 
 
 ## Структура
