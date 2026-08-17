@@ -23,7 +23,7 @@ export function HomeHero() {
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
             <Button href={routes.contact} className="w-full sm:w-auto">
-              {ctaCopy.contact}
+              {ctaCopy.requestProject}
             </Button>
             <Button
               href={routes.products}

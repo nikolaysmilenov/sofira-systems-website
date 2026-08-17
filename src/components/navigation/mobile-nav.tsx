@@ -4,6 +4,7 @@ import { useEffect, useId, useRef, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { NavLinks } from "@/components/navigation/nav-links";
+import { ctaCopy } from "@/data/labels";
 import { routes } from "@/data/navigation";
 
 export function MobileNav() {
@@ -97,7 +98,7 @@ export function MobileNav() {
               className="w-full"
               onClick={() => setOpen(false)}
             >
-              Свържете се с нас
+              {ctaCopy.requestProject}
             </Button>
           </div>
         </div>

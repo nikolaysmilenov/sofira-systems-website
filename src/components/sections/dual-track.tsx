@@ -9,13 +9,13 @@ export function DualTrack() {
       <div className="blueprint-grid-deep pointer-events-none absolute inset-0 opacity-70" />
       <div className="relative mx-auto grid w-full max-w-[1220px] px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
         <article className="border-white/10 py-10 lg:border-r lg:pr-12">
-          <p className="coord">TRACK A</p>
+          <p className="coord">TECHNOLOGY PARTNER</p>
           <h2 className="mt-5 text-3xl text-on-deep sm:text-4xl">
-            Работим с бизнеса
+            Технологичен партньор
           </h2>
           <p className="mt-5 max-w-md text-base leading-relaxed text-deep-muted">
-            Изграждаме решения според конкретните процеси, нужди и цели на
-            клиента.
+            Проектираме и изграждаме системи според процесите, ролите и данните
+            на вашия бизнес.
           </p>
           <DualVisual
             from="PROCESS"
@@ -29,13 +29,13 @@ export function DualTrack() {
           </div>
         </article>
         <article className="border-t border-white/10 py-10 lg:border-t-0 lg:pl-12">
-          <p className="coord">TRACK B</p>
+          <p className="coord">PRODUCT COMPANY</p>
           <h2 className="mt-5 text-3xl text-on-deep sm:text-4xl">
-            Създаваме собствени продукти
+            Продуктова компания
           </h2>
           <p className="mt-5 max-w-md text-base leading-relaxed text-deep-muted">
-            Разработваме собствени софтуерни продукти, които развиваме
-            дългосрочно.
+            Създаваме собствени продукти. HR HUB 360 е първата публична система
+            в тази линия.
           </p>
           <DualVisual
             from="ARCHITECTURE"

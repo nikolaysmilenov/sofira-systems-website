@@ -8,12 +8,13 @@ import { Container } from "@/components/ui/container";
 import { hrHubDashboard } from "@/data/hr-hub-screens";
 import { ctaCopy } from "@/data/labels";
 import { featuredProduct } from "@/data/products";
+import { routes } from "@/data/navigation";
 import { createPageMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = createPageMetadata({
   title: "Продукти",
   description:
-    "Собствени софтуерни продукти на SOFIRA SYSTEMS. HR HUB 360 е водещата система в разработка. Нови продукти ще бъдат добавяни тук.",
+    "SOFIRA SYSTEMS е технологичен партньор и продуктова компания. Собствен продукт: HR HUB 360. Нови системи ще се появят тук, когато са готови.",
   path: "/produkti",
   ogTitle: "Собствени продукти | SOFIRA SYSTEMS",
 });
@@ -26,9 +27,38 @@ export default function ProductsPage() {
       <PageHero
         tone="deep"
         eyebrow="Продукти"
-        title="Собствени продукти"
-        description="SOFIRA SYSTEMS развива собствен бизнес софтуер, отделно от клиентските проекти. HR HUB 360 е първата публична система. Следващите ще се появят тук, когато са готови."
+        title="Създаваме собствени продукти."
+        description="SOFIRA SYSTEMS е технологичен партньор и продуктова компания. Клиентските системи се изграждат по поръчка. Собствените продукти се развиват отделно. HR HUB 360 е първата публична система."
       />
+      <section className="border-b border-border bg-white">
+        <Container className="grid gap-10 py-12 sm:py-16 lg:grid-cols-2">
+          <div>
+            <p className="coord">TECHNOLOGY PARTNER</p>
+            <h2 className="mt-4 text-2xl text-foreground sm:text-3xl">
+              Технологичен партньор
+            </h2>
+            <p className="mt-3 max-w-md text-base leading-relaxed text-muted">
+              Изграждаме софтуер по поръчка за конкретна организация. Това е
+              отделна линия от собствените продукти.
+            </p>
+            <div className="mt-6">
+              <Button href={routes.services} variant="secondary">
+                {ctaCopy.viewServices}
+              </Button>
+            </div>
+          </div>
+          <div>
+            <p className="coord">PRODUCT COMPANY</p>
+            <h2 className="mt-4 text-2xl text-foreground sm:text-3xl">
+              Продуктова компания
+            </h2>
+            <p className="mt-3 max-w-md text-base leading-relaxed text-muted">
+              Създаваме собствени продукти. HR HUB 360 е първата публична
+              система. Следващите ще се появят тук, когато са готови.
+            </p>
+          </div>
+        </Container>
+      </section>
       {product ? (
         <section className="border-b border-border bg-navy-950">
           <Container className="py-16 sm:py-20 lg:py-24">
@@ -49,7 +79,7 @@ export default function ProductsPage() {
                   {product.summary} Все още не се продава през сайта.
                 </p>
                 <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                  <Button href={product.href}>{ctaCopy.viewProduct}</Button>
+                  <Button href={product.href}>{ctaCopy.viewHrHub}</Button>
                 </div>
               </div>
               <ProductScreenshot

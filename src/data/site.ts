@@ -12,7 +12,7 @@ export const site = {
   language: defaultLocale,
   title: "SOFIRA SYSTEMS — Софтуерни системи за бизнеса",
   description:
-    "SOFIRA SYSTEMS разработва софтуер по поръчка, бизнес системи, автоматизация, AI решения и собствени продукти. Водещ продукт: HR HUB 360.",
+    "SOFIRA SYSTEMS проектира и изгражда софтуер по поръчка, софтуерни системи, автоматизация, AI решения и собствени продукти. Водещ продукт: HR HUB 360.",
   logo: {
     mark: "/brand/sofira-logo.png",
     wordmark: "/brand/sofira-wordmark.png",

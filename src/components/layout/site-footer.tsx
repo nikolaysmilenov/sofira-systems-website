@@ -37,7 +37,7 @@ export function SiteFooter() {
               href={routes.contact}
               className="mt-4 inline-flex min-h-11 items-center text-sm font-medium text-cyan-bright hover:text-white"
             >
-              Към формата за контакт
+              Заявете проект
             </Link>
           </div>
         </div>

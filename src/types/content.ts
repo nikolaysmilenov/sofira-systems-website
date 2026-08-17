@@ -18,6 +18,10 @@ export type Service = {
   title: string;
   shortDescription: string;
   description: string;
+  problem: string;
+  solution: string;
+  components: string[];
+  inquiry?: string;
   icon: ServiceIconName;
   group: ServiceGroup;
 };

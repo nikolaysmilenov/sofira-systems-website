@@ -35,11 +35,9 @@ export function ProductFeature() {
               обучения в една среда. Все още не се продава през сайта.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Button href={getProductInquireHref(product)}>
+              <Button href={product.href}>{ctaCopy.viewHrHub}</Button>
+              <Button href={getProductInquireHref(product)} variant="secondary">
                 {ctaCopy.inquire}
-              </Button>
-              <Button href={product.href} variant="secondary">
-                {ctaCopy.viewProduct}
               </Button>
             </div>
           </div>

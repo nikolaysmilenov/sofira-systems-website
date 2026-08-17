@@ -11,15 +11,14 @@ export function ContactCta() {
         <div>
           <p className="coord">NEXT</p>
           <h2 className="mt-4 max-w-2xl text-3xl text-on-deep sm:text-5xl">
-            Разкажете ни какво искате да изградим.
+            Заявете проект.
           </h2>
           <p className="mt-5 max-w-xl text-base leading-relaxed text-deep-muted sm:text-lg">
-            Можете да възложите система за вашия бизнес или да заявите информация
-            за HR HUB 360. Ще уточним обхвата и дали SOFIRA SYSTEMS е правилният
-            партньор.
+            Опишете какво искате да изградим — софтуерна система, автоматизация,
+            AI решение или информация за HR HUB 360. Ще уточним обхвата.
           </p>
         </div>
-        <Button href={routes.contact}>{ctaCopy.contact}</Button>
+        <Button href={routes.contact}>{ctaCopy.requestProject}</Button>
       </div>
     </Section>
   );

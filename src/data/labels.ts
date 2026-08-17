@@ -22,13 +22,21 @@ export const capabilityStateLabel = {
   upcoming: "Предстои",
 } as const;
 
-export const inquiryOptions: InquiryOption[] = [
-  { id: "project", label: "Проект" },
+export const intakeOptions: InquiryOption[] = [
   { id: "software", label: "Софтуерна система" },
   { id: "automation", label: "Автоматизация" },
   { id: "ai", label: "AI решение" },
+  { id: "platform", label: "Дигитална платформа" },
+  { id: "web", label: "Уеб приложение" },
   { id: "hr-hub-360", label: "HR HUB 360" },
+  { id: "unsure", label: "Все още не съм сигурен" },
+];
+
+export const inquiryOptions: InquiryOption[] = [
+  ...intakeOptions,
+  { id: "project", label: "Проект" },
   { id: "other", label: "Друго" },
+  { id: "business-system", label: "Вътрешна бизнес система" },
 ];
 
 const legacyInquiryIds = ["business-system"] as const;
@@ -40,10 +48,17 @@ export function isInquiryId(value: string): boolean {
   );
 }
 
+export function inquiryLabel(value: string): string {
+  return inquiryOptions.find((option) => option.id === value)?.label ?? "";
+}
+
 export const ctaCopy = {
   contact: "Свържете се с нас",
+  requestProject: "Заявете проект",
+  discussProject: "Обсъдете проект",
   learnMore: "Научете повече",
   viewProduct: "Разгледайте продукта",
+  viewHrHub: "Разгледайте HR HUB 360",
   viewProducts: "Разгледайте продуктите",
   viewServices: "Разгледайте услугите",
   inquire: "Заявете информация",

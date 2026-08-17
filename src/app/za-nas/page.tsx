@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { BuiltWithPurpose } from "@/components/sections/built-with-purpose";
 import { ContactCta } from "@/components/sections/contact-cta";
+import { HowWeWork } from "@/components/sections/how-we-work";
 import { PageHero } from "@/components/sections/page-hero";
 import { WhySofira } from "@/components/sections/why-sofira";
 import { Container } from "@/components/ui/container";
@@ -53,7 +53,7 @@ export default function AboutPage() {
           ))}
         </div>
       </Container>
-      <BuiltWithPurpose />
+      <HowWeWork />
       <WhySofira />
       <ContactCta />
     </>

@@ -2,7 +2,7 @@
 
 import { useId, useState, type FormEvent } from "react";
 import { Button } from "@/components/ui/button";
-import { inquiryOptions, ctaCopy } from "@/data/labels";
+import { inquiryOptions, intakeOptions, ctaCopy } from "@/data/labels";
 import { cn } from "@/lib/cn";
 import {
   emptyContactInput,
@@ -99,6 +99,14 @@ export function ContactForm({ defaultInquiry = "" }: ContactFormProps) {
   const preselectedLabel = inquiryOptions.find(
     (option) => option.id === defaultInquiry,
   )?.label;
+  const extraInquiry = inquiryOptions.find(
+    (option) =>
+      option.id === values.inquiry &&
+      !intakeOptions.some((intake) => intake.id === option.id),
+  );
+  const intakeChoices = extraInquiry
+    ? [...intakeOptions, extraInquiry]
+    : intakeOptions;
 
   return (
     <form
@@ -159,42 +167,44 @@ export function ContactForm({ defaultInquiry = "" }: ContactFormProps) {
       </div>
 
       <div className="mt-5">
-        <label
-          htmlFor={`${formId}-inquiry`}
+        <p
+          id={`${formId}-inquiry-label`}
           className="block text-sm font-medium text-foreground"
         >
           Какво искате да изградим?
           <span className="text-subtle"> — по избор</span>
-        </label>
-        <select
-          id={`${formId}-inquiry`}
-          name="inquiry"
-          disabled={disabled}
-          value={values.inquiry}
-          aria-invalid={errors.inquiry ? true : undefined}
-          aria-describedby={
-            [
-              errors.inquiry ? `${formId}-inquiry-error` : null,
-              defaultInquiry ? `${formId}-inquiry-hint` : null,
-            ]
-              .filter(Boolean)
-              .join(" ") || undefined
-          }
-          onChange={(event) =>
-            setValues((current) => ({ ...current, inquiry: event.target.value }))
-          }
-          className={cn(
-            fieldClassName(Boolean(errors.inquiry)),
-            "[color-scheme:light]",
-          )}
+        </p>
+        <div
+          role="group"
+          aria-labelledby={`${formId}-inquiry-label`}
+          className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2"
         >
-          <option value="">Изберете тема</option>
-          {inquiryOptions.map((option) => (
-            <option key={option.id} value={option.id}>
-              {option.label}
-            </option>
-          ))}
-        </select>
+          {intakeChoices.map((option) => {
+            const selected = values.inquiry === option.id;
+            return (
+              <button
+                key={option.id}
+                type="button"
+                aria-pressed={selected}
+                disabled={disabled}
+                onClick={() =>
+                  setValues((current) => ({
+                    ...current,
+                    inquiry: selected ? "" : option.id,
+                  }))
+                }
+                className={cn(
+                  "min-h-12 rounded-xl border px-4 py-3 text-left text-sm font-medium transition-colors",
+                  selected
+                    ? "border-electric bg-electric text-white"
+                    : "border-border bg-navy-950 text-foreground hover:border-electric/40",
+                )}
+              >
+                {option.label}
+              </button>
+            );
+          })}
+        </div>
         {defaultInquiry && preselectedLabel ? (
           <p id={`${formId}-inquiry-hint`} className="mt-2 text-sm text-subtle">
             Темата е предварително избрана: {preselectedLabel}. Можете да я
@@ -269,7 +279,7 @@ export function ContactForm({ defaultInquiry = "" }: ContactFormProps) {
 
       <div className="mt-6">
         <Button type="submit" disabled={disabled} className="w-full sm:w-auto">
-          {disabled ? "Изпращане…" : ctaCopy.sendInquiry}
+          {disabled ? "Изпращане…" : ctaCopy.requestProject}
         </Button>
       </div>
     </form>

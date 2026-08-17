@@ -6,11 +6,11 @@ import { isInquiryId } from "@/data/labels";
 import { createPageMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "Контакт",
+  title: "Заявете проект",
   description:
-    "Разкажете на SOFIRA SYSTEMS какво искате да изградим — софтуерна система, автоматизация, AI решение или информация за HR HUB 360.",
+    "Заявете проект към SOFIRA SYSTEMS — софтуерна система, автоматизация, AI решение, дигитална платформа или информация за HR HUB 360.",
   path: "/kontakt",
-  ogTitle: "Контакт със SOFIRA SYSTEMS",
+  ogTitle: "Заявете проект | SOFIRA SYSTEMS",
 });
 
 export default async function ContactPage({
@@ -25,9 +25,9 @@ export default async function ContactPage({
     <>
       <PageHero
         tone="deep"
-        eyebrow="Контакт"
-        title="Разкажете ни какво искате да изградим."
-        description="Проект, софтуерна система, автоматизация, AI решение или HR HUB 360. Формата е начало на разговор за обхват — не продажбена фуния."
+        eyebrow="Заявете проект"
+        title="Какво искате да изградим?"
+        description="Кратко запитване е достатъчно. Изберете типа проект, ако вече знаете посоката. Ще уточним обхвата след това."
       />
       <Container className="grid gap-12 py-14 sm:py-16 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:py-20">
         <ContactForm
@@ -38,11 +38,15 @@ export default async function ContactPage({
           <p className="coord">INTAKE</p>
           <h2 className="mt-4 text-2xl text-foreground">Какво следва</h2>
           <ol className="mt-6 space-y-5 text-sm leading-relaxed text-muted">
-            <li>01 — Опишете задачата с име, имейл и кратко съобщение.</li>
-            <li>02 — Изберете тема, ако вече знаете посоката.</li>
+            <li>01 — Изберете тип проект, ако вече имате посока.</li>
+            <li>02 — Опишете задачата с име, имейл и кратко съобщение.</li>
             <li>03 — SOFIRA SYSTEMS преглежда запитването и уточнява обхвата.</li>
             <li>04 — Не обещаваме срок за отговор, защото той зависи от задачата.</li>
           </ol>
+          <p className="mt-8 text-sm leading-relaxed text-subtle">
+            Ако предпочитате общ разговор, можете просто да се свържете с нас
+            през същата форма.
+          </p>
         </aside>
       </Container>
     </>

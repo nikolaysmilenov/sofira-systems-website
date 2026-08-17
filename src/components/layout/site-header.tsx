@@ -6,6 +6,7 @@ import { Container } from "@/components/ui/container";
 import { Logo } from "@/components/ui/logo";
 import { MobileNav } from "@/components/navigation/mobile-nav";
 import { NavLinks } from "@/components/navigation/nav-links";
+import { ctaCopy } from "@/data/labels";
 import { routes } from "@/data/navigation";
 import { cn } from "@/lib/cn";
 
@@ -37,7 +38,7 @@ export function SiteHeader() {
         </nav>
         <div className="flex items-center gap-2">
           <div className="hidden lg:block">
-            <Button href={routes.contact}>Свържете се с нас</Button>
+            <Button href={routes.contact}>{ctaCopy.requestProject}</Button>
           </div>
           <MobileNav />
         </div>
