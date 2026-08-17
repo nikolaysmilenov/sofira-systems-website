@@ -16,7 +16,7 @@ export default function ErrorPage({ error, retry }: ErrorPageProps) {
 
   return (
     <Container className="py-24 text-center sm:py-32">
-      <p className="text-[11px] font-medium uppercase tracking-[0.28em] text-cyan">
+      <p className="text-[11px] font-medium uppercase tracking-[0.28em] text-electric">
         Грешка
       </p>
       <h1 className="mt-4 text-3xl text-foreground sm:text-5xl">

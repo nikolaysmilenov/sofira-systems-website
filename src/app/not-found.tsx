@@ -6,7 +6,7 @@ import { routes } from "@/data/navigation";
 export default function NotFound() {
   return (
     <Container className="py-24 text-center sm:py-32">
-      <p className="text-[11px] font-medium uppercase tracking-[0.28em] text-cyan">
+      <p className="text-[11px] font-medium uppercase tracking-[0.28em] text-electric">
         404
       </p>
       <h1 className="mt-4 text-3xl text-foreground sm:text-5xl">
@@ -24,7 +24,7 @@ export default function NotFound() {
       </div>
       <p className="mt-8 text-sm text-subtle">
         Ако търсите конкретен продукт, започнете от{" "}
-        <Link href={routes.products} className="text-cyan hover:text-foreground">
+        <Link href={routes.products} className="font-medium text-electric hover:text-electric-hover">
           продуктите
         </Link>
         .

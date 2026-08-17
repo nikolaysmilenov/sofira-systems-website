@@ -5,7 +5,7 @@ import { principles } from "@/data/principles";
 
 export function WhySofira() {
   return (
-    <Section>
+    <Section className="bg-navy-950">
       <SectionHeading
         eyebrow="Защо SOFIRA SYSTEMS"
         title="Принципи, по които работим"

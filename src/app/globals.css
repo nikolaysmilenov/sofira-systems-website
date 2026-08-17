@@ -2,35 +2,46 @@
 
 :root {
   --black: #000000;
-  --navy-950: #070b12;
-  --navy-900: #0b1220;
-  --navy-800: #121a2c;
-  --navy-700: #1a2438;
+  --white: #ffffff;
+  --background: #ffffff;
+  --background-alt: #f3f6fb;
+  --navy-950: #f3f6fb;
+  --navy-900: #ffffff;
+  --navy-800: #eef3fa;
+  --navy-700: #e2eaf6;
+  --ink: #0c1730;
   --electric: #1a6dff;
-  --electric-hover: #3d85ff;
-  --cyan: #22c4ff;
-  --foreground: #f4f6fa;
-  --muted: #9aa6bd;
-  --subtle: #6d7a93;
-  --border: rgb(255 255 255 / 0.08);
+  --electric-hover: #1558d4;
+  --cyan: #0a7eb5;
+  --cyan-bright: #22c4ff;
+  --foreground: #0c1730;
+  --muted: #4d5d78;
+  --subtle: #64748b;
+  --border: rgb(15 40 80 / 0.1);
+  --shadow: 0 10px 30px rgb(15 40 80 / 0.06);
   --header-height: 4.25rem;
 }
 
 @theme inline {
   --color-black: var(--black);
+  --color-white: var(--white);
+  --color-background: var(--background);
+  --color-background-alt: var(--background-alt);
   --color-navy-950: var(--navy-950);
   --color-navy-900: var(--navy-900);
   --color-navy-800: var(--navy-800);
   --color-navy-700: var(--navy-700);
-  --color-electric: var(--electric);
-  --color-electric-hover: var(--electric-hover);
-  --color-cyan: var(--cyan);
+  --color-ink: var(--ink);
+  --color-electric: #1a6dff;
+  --color-electric-hover: #1558d4;
+  --color-cyan: #0a7eb5;
+  --color-cyan-bright: var(--cyan-bright);
   --color-foreground: var(--foreground);
   --color-muted: var(--muted);
   --color-subtle: var(--subtle);
   --color-border: var(--border);
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-manrope), var(--font-inter), ui-sans-serif, sans-serif;
+  --font-display: var(--font-manrope), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --radius-sm: 0.5rem;
   --radius-md: 0.75rem;
   --radius-lg: 1rem;
@@ -38,7 +49,7 @@
 
 html {
   scroll-behavior: smooth;
-  background: var(--black);
+  background: var(--background);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -59,7 +70,7 @@ html {
 body {
   min-height: 100vh;
   overflow-x: clip;
-  background: var(--black);
+  background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
   font-size: 1rem;
@@ -84,8 +95,8 @@ h3,
 }
 
 ::selection {
-  background: color-mix(in oklab, var(--electric) 45%, black);
-  color: white;
+  background: color-mix(in oklab, var(--electric) 28%, white);
+  color: var(--ink);
 }
 
 @keyframes fade-up {
@@ -101,7 +112,7 @@ h3,
 }
 
 .reveal {
-  animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: fade-up 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .mobile-nav-dialog {
@@ -114,26 +125,52 @@ h3,
   padding: 0;
   overflow: auto;
   border: 0;
-  background: #000000;
+  background: #ffffff;
   color: var(--foreground);
 }
 
 .mobile-nav-dialog::backdrop {
-  background: rgb(0 0 0 / 0.72);
+  background: rgb(12 23 48 / 0.28);
 }
 
 .hero-grid {
   background-image:
-    linear-gradient(rgb(255 255 255 / 0.028) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(255 255 255 / 0.028) 1px, transparent 1px);
-  background-size: 80px 80px;
-  mask-image: radial-gradient(ellipse 70% 60% at 78% 42%, black 12%, transparent 72%);
+    linear-gradient(rgb(26 109 255 / 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(26 109 255 / 0.05) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: radial-gradient(ellipse 80% 70% at 78% 42%, black 18%, transparent 78%);
 }
 
 .hero-glow {
-  background: radial-gradient(
-    circle at 78% 48%,
-    rgb(26 109 255 / 0.14),
-    transparent 38%
-  );
+  background:
+    radial-gradient(circle at 82% 28%, rgb(26 109 255 / 0.12), transparent 32%),
+    radial-gradient(circle at 90% 80%, rgb(34 196 255 / 0.1), transparent 28%);
+}
+
+.soft-shadow {
+  box-shadow: var(--shadow);
+}
+
+.concept-window {
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: var(--shadow);
+}
+
+.concept-chrome {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-bottom: 1px solid var(--border);
+  background: #f7f9fc;
+  padding: 0.7rem 0.9rem;
+}
+
+.concept-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 999px;
+  background: #d5deea;
 }

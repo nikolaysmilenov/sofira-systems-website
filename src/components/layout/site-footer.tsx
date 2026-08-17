@@ -3,7 +3,6 @@ import { Container } from "@/components/ui/container";
 import { Logo } from "@/components/ui/logo";
 import { footerNav, legalNav, routes } from "@/data/navigation";
 import { products } from "@/data/products";
-import { services } from "@/data/services";
 import { site } from "@/data/site";
 
 export function SiteFooter() {
@@ -29,11 +28,13 @@ export function SiteFooter() {
             }))}
           />
           <FooterColumn
-            title="Услуги"
-            links={services.map((service) => ({
-              href: `${routes.services}#${service.slug}`,
-              label: service.title,
-            }))}
+            title="Компанията"
+            links={[
+              { href: routes.services, label: "Услуги" },
+              { href: routes.projects, label: "Проекти" },
+              { href: routes.about, label: "За нас" },
+              { href: routes.contact, label: "Контакт" },
+            ]}
           />
           <div className="lg:col-span-2">
             <p className="text-sm font-medium text-foreground">Контакт</p>
@@ -42,7 +43,7 @@ export function SiteFooter() {
             </p>
             <Link
               href={routes.contact}
-              className="mt-3 inline-flex min-h-11 items-center text-sm text-cyan hover:text-foreground"
+              className="mt-3 inline-flex min-h-11 items-center text-sm font-medium text-electric hover:text-electric-hover"
             >
               Свържете се с нас
             </Link>
@@ -57,7 +58,7 @@ export function SiteFooter() {
               <li key={item.href}>
                 <Link
                   href={item.href}
-                  className="text-xs text-subtle hover:text-muted"
+                  className="text-xs text-subtle hover:text-foreground"
                 >
                   {item.label}
                 </Link>
@@ -82,7 +83,7 @@ function FooterColumn({
       <p className="text-sm font-medium text-foreground">{title}</p>
       <ul className="mt-4 space-y-2">
         {links.map((item) => (
-          <li key={item.href}>
+          <li key={`${item.href}-${item.label}`}>
             <Link
               href={item.href}
               className="text-sm text-muted transition-colors hover:text-foreground"

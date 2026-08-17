@@ -11,9 +11,9 @@ export function ProductsSection() {
     <Section>
       <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
         <SectionHeading
-          eyebrow="Нашите продукти"
-          title="Собствен софтуер, не само поръчкова разработка"
-          description="Собствени системи на SOFIRA SYSTEMS, отделно от клиентските проекти. HR HUB 360 е първата публична система."
+          eyebrow="Портфолио"
+          title="Собствени продукти"
+          description="Собствен бизнес софтуер на SOFIRA SYSTEMS, отделно от клиентските проекти. HR HUB 360 е първата публична система."
         />
         <Button href={routes.products} variant="secondary" className="w-fit">
           {ctaCopy.viewProducts}

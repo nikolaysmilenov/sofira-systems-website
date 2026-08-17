@@ -116,7 +116,7 @@ export function ContactForm({ defaultInquiry = "" }: ContactFormProps) {
 
   return (
     <form
-      className="relative rounded-xl border border-border bg-navy-900 p-5 sm:p-8"
+      className="relative rounded-xl border border-border bg-white p-5 shadow-[0_10px_30px_rgb(15_40_80_/_0.04)] sm:p-8"
       onSubmit={onSubmit}
       noValidate
       method="post"
@@ -139,7 +139,7 @@ export function ContactForm({ defaultInquiry = "" }: ContactFormProps) {
               >
                 {field.label}
                 {field.required ? (
-                  <span className="text-cyan"> *</span>
+                  <span className="text-electric"> *</span>
                 ) : (
                   <span className="text-subtle"> — по избор</span>
                 )}
@@ -163,7 +163,7 @@ export function ContactForm({ defaultInquiry = "" }: ContactFormProps) {
                 className={fieldClassName(Boolean(error))}
               />
               {error ? (
-                <p id={errorId} className="mt-2 text-sm text-red-300" role="alert">
+        <p id={errorId} className="mt-2 text-sm text-red-700" role="alert">
                   {error}
                 </p>
               ) : null}
@@ -199,7 +199,7 @@ export function ContactForm({ defaultInquiry = "" }: ContactFormProps) {
           }
           className={cn(
             fieldClassName(Boolean(errors.inquiry)),
-            "[color-scheme:dark]",
+            "[color-scheme:light]",
           )}
         >
           <option value="">Изберете тема</option>
@@ -218,7 +218,7 @@ export function ContactForm({ defaultInquiry = "" }: ContactFormProps) {
         {errors.inquiry ? (
           <p
             id={`${formId}-inquiry-error`}
-            className="mt-2 text-sm text-red-300"
+            className="mt-2 text-sm text-red-700"
             role="alert"
           >
             {errors.inquiry}
@@ -231,7 +231,7 @@ export function ContactForm({ defaultInquiry = "" }: ContactFormProps) {
           htmlFor={`${formId}-message`}
           className="block text-sm font-medium text-foreground"
         >
-          Съобщение<span className="text-cyan"> *</span>
+          Съобщение<span className="text-electric"> *</span>
         </label>
         <textarea
           id={`${formId}-message`}
@@ -248,7 +248,7 @@ export function ContactForm({ defaultInquiry = "" }: ContactFormProps) {
           className={cn(fieldClassName(Boolean(errors.message)), "resize-y")}
         />
         {errors.message ? (
-          <p id={`${formId}-message-error`} className="mt-2 text-sm text-red-300" role="alert">
+          <p id={`${formId}-message-error`} className="mt-2 text-sm text-red-700" role="alert">
             {errors.message}
           </p>
         ) : null}
@@ -283,7 +283,7 @@ export function ContactForm({ defaultInquiry = "" }: ContactFormProps) {
       ) : null}
 
       {status.type === "error" ? (
-        <p className="mt-5 rounded-md border border-red-400/30 bg-red-950/40 px-4 py-3 text-sm text-red-200" role="alert">
+        <p className="mt-5 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700" role="alert">
           {status.message}
         </p>
       ) : null}
@@ -299,7 +299,7 @@ export function ContactForm({ defaultInquiry = "" }: ContactFormProps) {
 
 function fieldClassName(invalid: boolean): string {
   return cn(
-    "mt-2 w-full rounded-md border bg-black px-3 py-2.5 text-sm text-foreground transition-colors",
+    "mt-2 w-full rounded-md border bg-navy-950 px-3 py-2.5 text-sm text-foreground transition-colors",
     invalid
       ? "border-red-400/60"
       : "border-border focus:border-electric",

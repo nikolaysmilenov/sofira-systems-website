@@ -16,7 +16,7 @@ export function PageHero({
   badge,
 }: PageHeroProps) {
   return (
-    <section className="border-b border-border bg-black">
+    <section className="border-b border-border bg-navy-950">
       <Container className="py-14 sm:py-16 lg:py-20">
         <Eyebrow>{eyebrow}</Eyebrow>
         {badge ? <div className="mt-4">{badge}</div> : null}

@@ -24,7 +24,7 @@ export function ProjectCard({ project, className }: ProjectCardProps) {
       </p>
       <Link
         href={project.href}
-        className="mt-6 inline-flex min-h-11 items-center text-sm text-muted transition-colors hover:text-foreground"
+        className="mt-6 inline-flex min-h-11 items-center text-sm font-medium text-electric transition-colors hover:text-electric-hover"
       >
         {ctaCopy.learnMore}
       </Link>

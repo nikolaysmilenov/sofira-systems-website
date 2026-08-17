@@ -31,16 +31,20 @@ export function Logo({
       aria-label={`${site.name} — начална страница`}
       className="group inline-flex min-w-0 items-center gap-3 rounded-sm"
     >
-      <Image
-        src={site.logo.mark}
-        alt=""
-        width={site.logo.markWidth}
-        height={site.logo.markHeight}
-        priority={priority}
-        loading={priority ? "eager" : "lazy"}
-        className="shrink-0 object-contain"
+      <span
+        className="inline-flex shrink-0 items-center justify-center overflow-hidden rounded-lg bg-black"
         style={{ width, height }}
-      />
+      >
+        <Image
+          src={site.logo.mark}
+          alt=""
+          width={site.logo.markWidth}
+          height={site.logo.markHeight}
+          priority={priority}
+          loading={priority ? "eager" : "lazy"}
+          className="h-full w-full object-contain"
+        />
+      </span>
       {withWordmark ? (
         <span className="flex shrink-0 flex-col leading-none">
           <span

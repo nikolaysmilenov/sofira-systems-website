@@ -27,7 +27,7 @@ export default async function ContactPage({
       <PageHero
         eyebrow="Контакт"
         title="Разкажете ни от какво се нуждаете."
-        description="Опишете задачата или продукта, който ви интересува. SOFIRA SYSTEMS преглежда всяко запитване и се свързва, когато то пристигне при нас."
+        description="Независимо дали търсите софтуер по поръчка, автоматизация, AI решение или информация за HR HUB 360, можете да се свържете със SOFIRA SYSTEMS."
       />
       <Container className="grid gap-10 py-14 sm:py-16 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:py-20">
         <ContactForm

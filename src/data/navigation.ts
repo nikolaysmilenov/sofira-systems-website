@@ -31,7 +31,7 @@ export const mainNav: NavItem[] = [
   { href: routes.products, label: "Продукти" },
   { href: routes.projects, label: "Проекти" },
   { href: routes.about, label: "За нас" },
-  { href: routes.contact, label: "Контакти" },
+  { href: routes.contact, label: "Контакт" },
 ];
 
 export const footerNav: NavItem[] = mainNav;

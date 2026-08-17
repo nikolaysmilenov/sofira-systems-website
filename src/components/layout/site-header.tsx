@@ -7,7 +7,7 @@ import { routes } from "@/data/navigation";
 
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-50 h-[var(--header-height)] border-b border-border bg-black">
+    <header className="sticky top-0 z-50 h-[var(--header-height)] border-b border-border bg-white/95 shadow-[0_8px_24px_rgb(15_40_80_/_0.04)]">
       <Container className="flex h-full items-center justify-between gap-4">
         <Logo priority />
         <nav className="hidden lg:block" aria-label="Основна навигация">

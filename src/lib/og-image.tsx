@@ -24,18 +24,25 @@ export async function createOgImage(): Promise<ImageResponse> {
           height: "100%",
           display: "flex",
           alignItems: "center",
-          background: "#000000",
+          background: "#F3F6FB",
           padding: "72px 88px",
         }}
       >
-        {/* Satori/OG rendering does not support next/image. */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={logoSrc}
-          width={168}
-          height={181}
-          alt=""
-        />
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            width: 176,
+            height: 176,
+            background: "#000000",
+            borderRadius: 28,
+          }}
+        >
+          {/* Satori/OG rendering does not support next/image. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={logoSrc} width={132} height={142} alt="" />
+        </div>
         <div
           style={{
             display: "flex",
@@ -45,7 +52,7 @@ export async function createOgImage(): Promise<ImageResponse> {
         >
           <div
             style={{
-              color: "#F4F6FA",
+              color: "#0C1730",
               fontSize: 68,
               fontWeight: 700,
               letterSpacing: 10,
@@ -56,7 +63,7 @@ export async function createOgImage(): Promise<ImageResponse> {
           </div>
           <div
             style={{
-              color: "#8EA0BB",
+              color: "#4D5D78",
               fontSize: 26,
               letterSpacing: 18,
               marginTop: 18,

@@ -45,7 +45,7 @@ export function ServiceCard({
         {variant === "detail" ? service.description : service.shortDescription}
       </p>
       {variant === "teaser" ? (
-        <span className="mt-5 text-sm text-muted transition-colors group-hover:text-foreground">
+        <span className="mt-5 text-sm font-medium text-electric transition-colors group-hover:text-electric-hover">
           {ctaCopy.learnMore}
         </span>
       ) : null}

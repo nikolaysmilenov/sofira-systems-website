@@ -18,9 +18,9 @@ export default function ProductsPage() {
   return (
     <>
       <PageHero
-        eyebrow="Нашите продукти"
-        title="Собствен софтуер за реални бизнес задачи"
-        description="SOFIRA SYSTEMS развива собствени продукти, отделно от клиентските проекти. HR HUB 360 е първата публична система. Следващите ще се появят тук, когато са готови."
+        eyebrow="Портфолио"
+        title="Собствени продукти"
+        description="SOFIRA SYSTEMS развива собствен бизнес софтуер, отделно от клиентските проекти. HR HUB 360 е първата публична система. Следващите ще се появят тук, когато са готови."
       />
       <Container className="py-14 sm:py-16 lg:py-20">
         <ProductGrid products={products} showFutureSlot />

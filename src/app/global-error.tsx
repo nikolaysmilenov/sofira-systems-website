@@ -15,14 +15,14 @@ export default function GlobalError({ error, retry }: GlobalErrorProps) {
 
   return (
     <html lang="bg">
-      <body className="bg-black text-white">
+      <body className="bg-white text-[#0c1730]">
         <main className="mx-auto flex min-h-screen max-w-xl flex-col items-center justify-center px-6 py-24 text-center">
           <title>Грешка | SOFIRA SYSTEMS</title>
-          <p className="text-sm uppercase tracking-[0.28em] text-[#22c4ff]">
+          <p className="text-sm uppercase tracking-[0.28em] text-[#1a6dff]">
             Грешка
           </p>
           <h1 className="mt-4 text-3xl">Сайтът не можа да се зареди</h1>
-          <p className="mt-4 text-white/70">
+          <p className="mt-4 text-[#4d5d78]">
             Възникна проблем в основната структура на страницата. Опитайте да я
             заредите отново.
           </p>

@@ -4,9 +4,9 @@ import { cn } from "@/lib/cn";
 
 const variants = {
   primary:
-    "bg-electric text-white hover:bg-electric-hover shadow-[0_0_0_1px_rgb(26_109_255_/_0.4)]",
+    "bg-electric text-white hover:bg-electric-hover shadow-[0_8px_20px_rgb(26_109_255_/_0.22)]",
   secondary:
-    "border border-white/15 bg-transparent text-foreground hover:border-electric/50 hover:bg-white/5",
+    "border border-border bg-white text-foreground hover:border-electric/40 hover:bg-navy-800",
   ghost: "text-muted hover:text-foreground",
 } as const;
 

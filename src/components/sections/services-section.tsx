@@ -12,7 +12,7 @@ export function ServicesSection() {
       <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
         <SectionHeading
           eyebrow="Услуги"
-          title="Клиентски системи и собствени продукти"
+          title="Какво получава клиентът"
           description="Разработваме софтуер за конкретни бизнес процеси и отделно изграждаме собствена продуктова линия."
         />
         <Button href={routes.services} variant="secondary" className="w-fit">

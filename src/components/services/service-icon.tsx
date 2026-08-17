@@ -26,8 +26,8 @@ export function ServiceIcon({ name }: ServiceIconProps) {
   const Icon = icons[name];
 
   return (
-    <span className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-border bg-black text-cyan">
-      <Icon aria-hidden="true" size={18} />
+    <span className="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-electric/8 text-electric">
+      <Icon aria-hidden="true" size={20} />
     </span>
   );
 }

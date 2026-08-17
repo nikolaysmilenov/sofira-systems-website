@@ -16,9 +16,9 @@ export function ProductStatusBadge({
       className={cn(
         "inline-flex w-fit rounded-full border px-2.5 py-1 text-[11px] font-medium uppercase tracking-[0.16em]",
         status === "available" &&
-          "border-cyan/40 bg-cyan/10 text-cyan",
+          "border-cyan/30 bg-cyan/10 text-cyan",
         status === "in-development" &&
-          "border-electric/40 bg-electric/10 text-electric-hover",
+          "border-electric/25 bg-electric/8 text-electric",
         status === "coming-soon" &&
           "border-border bg-navy-800 text-subtle",
         className,
