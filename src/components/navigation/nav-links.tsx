@@ -35,7 +35,7 @@ export function NavLinks({
               className={cn(
                 "inline-flex min-h-11 items-center rounded-md px-3 text-sm transition-colors",
                 current
-                  ? "bg-navy-800 font-medium text-foreground"
+                  ? "bg-electric/8 font-medium text-foreground"
                   : "text-muted hover:bg-navy-800 hover:text-foreground",
                 linkClassName,
               )}

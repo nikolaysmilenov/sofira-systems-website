@@ -7,6 +7,7 @@ type LogoProps = {
   size?: "sm" | "md" | "lg";
   withWordmark?: boolean;
   priority?: boolean;
+  tone?: "light" | "dark";
 };
 
 const sizes = {
@@ -19,6 +20,7 @@ export function Logo({
   size = "md",
   withWordmark = true,
   priority = false,
+  tone = "light",
 }: LogoProps) {
   const height = sizes[size];
   const width = Math.round(
@@ -49,16 +51,18 @@ export function Logo({
         <span className="flex shrink-0 flex-col leading-none">
           <span
             className={cn(
-              "font-display font-semibold tracking-[0.12em] text-foreground sm:tracking-[0.18em]",
+              "font-display font-semibold tracking-[0.12em] sm:tracking-[0.18em]",
               size === "lg" ? "text-lg" : "text-[13px] sm:text-sm",
+              tone === "dark" ? "text-on-deep" : "text-foreground",
             )}
           >
             SOFIRA
           </span>
           <span
             className={cn(
-              "mt-1 tracking-[0.22em] text-muted sm:tracking-[0.38em]",
+              "mt-1 tracking-[0.22em] sm:tracking-[0.38em]",
               size === "lg" ? "text-[11px]" : "text-[9px] sm:text-[10px]",
+              tone === "dark" ? "text-deep-muted" : "text-muted",
             )}
           >
             SYSTEMS

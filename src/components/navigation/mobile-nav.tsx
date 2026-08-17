@@ -32,9 +32,17 @@ export function MobileNav() {
       return;
     }
 
-    const onClose = () => setOpen(false);
+    let mounted = true;
+    const onClose = () => {
+      if (mounted) {
+        setOpen(false);
+      }
+    };
     dialog.addEventListener("close", onClose);
-    return () => dialog.removeEventListener("close", onClose);
+    return () => {
+      mounted = false;
+      dialog.removeEventListener("close", onClose);
+    };
   }, []);
 
   useEffect(() => {

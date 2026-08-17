@@ -10,16 +10,24 @@
   --navy-800: #eef3fa;
   --navy-700: #e2eaf6;
   --ink: #0c1730;
+  --deep: #0c1730;
+  --deep-700: #15233f;
+  --deep-muted: #9aabc4;
+  --on-deep: #f4f7fb;
   --electric: #1a6dff;
   --electric-hover: #1558d4;
   --cyan: #0a7eb5;
   --cyan-bright: #22c4ff;
+  --hr-sidebar: #0c1929;
+  --hr-primary: #1f6f8b;
+  --hr-canvas: #f4f6f8;
+  --hr-border: #d8e0e8;
   --foreground: #0c1730;
   --muted: #4d5d78;
   --subtle: #64748b;
   --border: rgb(15 40 80 / 0.1);
   --shadow: 0 10px 30px rgb(15 40 80 / 0.06);
-  --header-height: 4.25rem;
+  --header-height: 4.5rem;
 }
 
 @theme inline {
@@ -32,10 +40,18 @@
   --color-navy-800: var(--navy-800);
   --color-navy-700: var(--navy-700);
   --color-ink: var(--ink);
+  --color-deep: var(--deep);
+  --color-deep-700: var(--deep-700);
+  --color-deep-muted: var(--deep-muted);
+  --color-on-deep: var(--on-deep);
   --color-electric: #1a6dff;
   --color-electric-hover: #1558d4;
   --color-cyan: #0a7eb5;
   --color-cyan-bright: var(--cyan-bright);
+  --color-hr-sidebar: var(--hr-sidebar);
+  --color-hr-primary: var(--hr-primary);
+  --color-hr-canvas: var(--hr-canvas);
+  --color-hr-border: var(--hr-border);
   --color-foreground: var(--foreground);
   --color-muted: var(--muted);
   --color-subtle: var(--subtle);
@@ -84,8 +100,8 @@ h2,
 h3,
 .font-display {
   font-family: var(--font-display);
-  letter-spacing: -0.035em;
-  line-height: 1.12;
+  letter-spacing: -0.04em;
+  line-height: 1.08;
   font-weight: 600;
 }
 
@@ -111,8 +127,45 @@ h3,
   }
 }
 
+@keyframes dash-flow {
+  to {
+    stroke-dashoffset: -28;
+  }
+}
+
+@keyframes node-breathe {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes signal {
+  0% {
+    offset-distance: 0%;
+    opacity: 0;
+  }
+
+  12% {
+    opacity: 1;
+  }
+
+  88% {
+    opacity: 1;
+  }
+
+  100% {
+    offset-distance: 100%;
+    opacity: 0;
+  }
+}
+
 .reveal {
-  animation: fade-up 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .mobile-nav-dialog {
@@ -133,18 +186,24 @@ h3,
   background: rgb(12 23 48 / 0.28);
 }
 
-.hero-grid {
+.blueprint-grid {
   background-image:
-    linear-gradient(rgb(26 109 255 / 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(26 109 255 / 0.05) 1px, transparent 1px);
-  background-size: 72px 72px;
-  mask-image: radial-gradient(ellipse 80% 70% at 78% 42%, black 18%, transparent 78%);
+    linear-gradient(rgb(26 109 255 / 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(26 109 255 / 0.07) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+.blueprint-grid-deep {
+  background-image:
+    linear-gradient(rgb(255 255 255 / 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 0.045) 1px, transparent 1px);
+  background-size: 64px 64px;
 }
 
 .hero-glow {
   background:
-    radial-gradient(circle at 82% 28%, rgb(26 109 255 / 0.12), transparent 32%),
-    radial-gradient(circle at 90% 80%, rgb(34 196 255 / 0.1), transparent 28%);
+    radial-gradient(circle at 82% 22%, rgb(26 109 255 / 0.14), transparent 34%),
+    radial-gradient(circle at 92% 78%, rgb(34 196 255 / 0.1), transparent 30%);
 }
 
 .soft-shadow {
@@ -156,21 +215,41 @@ h3,
   border-radius: 1rem;
   overflow: hidden;
   background: #ffffff;
-  box-shadow: var(--shadow);
+  box-shadow: 0 24px 60px rgb(12 23 48 / 0.12);
 }
 
-.concept-chrome {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  border-bottom: 1px solid var(--border);
-  background: #f7f9fc;
-  padding: 0.7rem 0.9rem;
+.hr-frame {
+  overflow: hidden;
+  border: 1px solid #1a2a3d;
+  border-radius: 1rem;
+  background: var(--hr-canvas);
+  box-shadow: 0 28px 70px rgb(12 23 48 / 0.18);
 }
 
-.concept-dot {
-  width: 0.5rem;
-  height: 0.5rem;
-  border-radius: 999px;
-  background: #d5deea;
+.flow-line {
+  stroke-dasharray: 5 7;
+  animation: dash-flow 2.8s linear infinite;
+}
+
+.signal {
+  offset-rotate: 0deg;
+  animation: signal 3.6s ease-in-out infinite;
+}
+
+.coord {
+  font-family: var(--font-display);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--subtle);
+}
+
+.deep-section {
+  background: var(--deep);
+  color: var(--on-deep);
+}
+
+.deep-section .coord {
+  color: var(--deep-muted);
 }

@@ -1,29 +1,27 @@
 import { Section } from "@/components/ui/section";
-import { SectionHeading } from "@/components/ui/section-heading";
-import { Surface } from "@/components/ui/surface";
 import { processSteps } from "@/data/process";
 
 export function HowWeWork() {
   return (
     <Section>
-      <SectionHeading
-        eyebrow="Подход"
-        title="Как работим"
-        description="SOFIRA SYSTEMS е технологичен партньор. Започваме от реалния проблем и стигаме до система, която може да се поддържа и развива."
-      />
-      <div className="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <p className="coord">APPROACH</p>
+      <h2 className="mt-4 max-w-3xl text-3xl text-foreground sm:text-4xl">
+        Как работим
+      </h2>
+      <ol className="mt-12 divide-y divide-border border-y border-border">
         {processSteps.map((step) => (
-          <Surface key={step.index} className="p-6">
-            <p className="font-display text-xs tracking-[0.22em] text-subtle">
-              {step.index}
-            </p>
-            <h3 className="mt-4 text-lg text-foreground">{step.title}</h3>
-            <p className="mt-3 text-sm leading-relaxed text-muted">
+          <li
+            key={step.index}
+            className="grid gap-3 py-7 sm:grid-cols-[4.5rem_minmax(0,0.8fr)_minmax(0,1.3fr)]"
+          >
+            <span className="font-display text-xl text-electric">{step.index}</span>
+            <h3 className="text-xl text-foreground">{step.title}</h3>
+            <p className="text-sm leading-relaxed text-muted sm:text-base">
               {step.description}
             </p>
-          </Surface>
+          </li>
         ))}
-      </div>
+      </ol>
     </Section>
   );
 }

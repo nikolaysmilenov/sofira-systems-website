@@ -116,7 +116,7 @@ export function ContactForm({ defaultInquiry = "" }: ContactFormProps) {
 
   return (
     <form
-      className="relative rounded-xl border border-border bg-white p-5 shadow-[0_10px_30px_rgb(15_40_80_/_0.04)] sm:p-8"
+      className="relative rounded-[1.4rem] border border-border bg-white p-5 shadow-[0_20px_50px_rgb(12_23_48_/_0.06)] sm:p-8"
       onSubmit={onSubmit}
       noValidate
       method="post"
@@ -177,7 +177,7 @@ export function ContactForm({ defaultInquiry = "" }: ContactFormProps) {
           htmlFor={`${formId}-inquiry`}
           className="block text-sm font-medium text-foreground"
         >
-          Как можем да помогнем?
+          Какво искате да изградим?
           <span className="text-subtle"> — по избор</span>
         </label>
         <select

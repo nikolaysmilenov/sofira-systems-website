@@ -7,6 +7,8 @@ const variants = {
     "bg-electric text-white hover:bg-electric-hover shadow-[0_8px_20px_rgb(26_109_255_/_0.22)]",
   secondary:
     "border border-border bg-white text-foreground hover:border-electric/40 hover:bg-navy-800",
+  inverse:
+    "border border-white/20 bg-white/6 text-white hover:border-white/40 hover:bg-white/10",
   ghost: "text-muted hover:text-foreground",
 } as const;
 

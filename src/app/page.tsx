@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
-import { WhatWeDo } from "@/components/sections/what-we-do";
+import { AutomationSection } from "@/components/sections/automation-section";
+import { BeyondWebsites } from "@/components/sections/beyond-websites";
+import { BuiltWithPurpose } from "@/components/sections/built-with-purpose";
 import { ContactCta } from "@/components/sections/contact-cta";
+import { DualTrack } from "@/components/sections/dual-track";
 import { HomeHero } from "@/components/sections/home-hero";
-import { HowWeWork } from "@/components/sections/how-we-work";
+import { PracticalAi } from "@/components/sections/practical-ai";
 import { ProductFeature } from "@/components/sections/product-feature";
-import { ProductsSection } from "@/components/sections/products-section";
-import { ServicesSection } from "@/components/sections/services-section";
+import { TechnologyShowcase } from "@/components/sections/technology-showcase";
+import { WhatWeBuild } from "@/components/sections/what-we-build";
 import { WhySofira } from "@/components/sections/why-sofira";
 import { createPageMetadata } from "@/lib/metadata";
 
@@ -21,11 +24,14 @@ export default function HomePage() {
   return (
     <>
       <HomeHero />
-      <WhatWeDo />
-      <ServicesSection />
-      <ProductsSection />
+      <TechnologyShowcase />
+      <WhatWeBuild />
+      <DualTrack />
       <ProductFeature />
-      <HowWeWork />
+      <BuiltWithPurpose />
+      <PracticalAi />
+      <AutomationSection />
+      <BeyondWebsites />
       <WhySofira />
       <ContactCta />
     </>

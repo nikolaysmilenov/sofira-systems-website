@@ -25,14 +25,14 @@ export function SectionHeading({
       ) : null}
       <h2
         className={cn(
-          "text-3xl font-semibold text-foreground sm:text-[2.15rem] sm:leading-tight",
+          "max-w-3xl text-3xl font-semibold text-current sm:text-4xl sm:leading-[1.08] lg:text-[2.7rem]",
           eyebrow ? "mt-4" : "mt-0",
         )}
       >
         {title}
       </h2>
       {description ? (
-        <p className="mt-4 text-base leading-relaxed text-muted sm:text-lg">
+        <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">
           {description}
         </p>
       ) : null}

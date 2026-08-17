@@ -23,16 +23,21 @@ export const capabilityStateLabel = {
 } as const;
 
 export const inquiryOptions: InquiryOption[] = [
-  { id: "software", label: "Софтуерна разработка" },
+  { id: "project", label: "Проект" },
+  { id: "software", label: "Софтуерна система" },
   { id: "automation", label: "Автоматизация" },
   { id: "ai", label: "AI решение" },
-  { id: "business-system", label: "Бизнес система" },
   { id: "hr-hub-360", label: "HR HUB 360" },
   { id: "other", label: "Друго" },
 ];
 
+const legacyInquiryIds = ["business-system"] as const;
+
 export function isInquiryId(value: string): boolean {
-  return inquiryOptions.some((option) => option.id === value);
+  return (
+    inquiryOptions.some((option) => option.id === value) ||
+    legacyInquiryIds.includes(value as (typeof legacyInquiryIds)[number])
+  );
 }
 
 export const ctaCopy = {

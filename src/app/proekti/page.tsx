@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { ProjectCard } from "@/components/projects/project-card";
 import { ContactCta } from "@/components/sections/contact-cta";
 import { PageHero } from "@/components/sections/page-hero";
-import { Container } from "@/components/ui/container";
-import { Surface } from "@/components/ui/surface";
+import { ProductStatusBadge } from "@/components/products/product-status-badge";
+import { HrHubShowcase } from "@/components/products/hr-hub-showcase";
 import { Button } from "@/components/ui/button";
-import { projects } from "@/data/projects";
+import { Container } from "@/components/ui/container";
+import { featuredProduct } from "@/data/products";
 import { routes } from "@/data/navigation";
 import { createPageMetadata } from "@/lib/metadata";
 
@@ -18,47 +18,65 @@ export const metadata: Metadata = createPageMetadata({
 });
 
 export default function ProjectsPage() {
+  const product = featuredProduct;
+
   return (
     <>
       <PageHero
+        tone="deep"
         eyebrow="Избрани решения"
-        title="Решения за клиенти и собствени продукти"
-        description="SOFIRA SYSTEMS работи в две посоки. Клиентските системи се изграждат по конкретна задача. Собствените продукти се развиват независимо. Публикуваме само това, което реално изграждаме."
+        title="Технологично портфолио, без измислени казуси."
+        description="Публикуваме само това, което реално изграждаме. Клиентски проекти се показват със съгласие. Портфолиото ще расте, когато има какво да се покаже публично."
       />
-      <Container className="py-14 sm:py-16 lg:py-20">
-        <div className="grid gap-4 lg:grid-cols-2">
-          <Surface className="p-6 sm:p-8">
-            <h2 className="text-2xl text-foreground">Решения за клиенти</h2>
-            <p className="mt-4 text-base leading-relaxed text-muted">
-              Разработваме софтуер по поръчка, платформи и автоматизация според
-              реалните процеси на организацията. Клиентски проекти се показват
-              публично само със съгласие. Не публикуваме измислени казуси.
-            </p>
-            <div className="mt-6">
+      <section className="border-b border-border bg-white">
+        <Container className="grid gap-10 py-16 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:py-20">
+          <div>
+            <p className="coord">OWN PRODUCT</p>
+            {product ? (
+              <div className="mt-4">
+                <ProductStatusBadge status={product.status} />
+              </div>
+            ) : null}
+            <h2 className="mt-4 text-4xl text-foreground sm:text-5xl">
+              HR HUB 360
+            </h2>
+            <dl className="mt-8 space-y-6">
+              <div>
+                <dt className="text-xs tracking-[0.2em] text-subtle uppercase">Проблем</dt>
+                <dd className="mt-2 text-base leading-relaxed text-muted">
+                  HR процесите често се разпръскват между таблици, документи и
+                  отделни инструменти.
+                </dd>
+              </div>
+              <div>
+                <dt className="text-xs tracking-[0.2em] text-subtle uppercase">
+                  Технологична концепция
+                </dt>
+                <dd className="mt-2 text-base leading-relaxed text-muted">
+                  Десктоп система за Windows с български интерфейс: служители,
+                  договори, документи, отпуски, работно време, подбор и обучения
+                  в една среда.
+                </dd>
+              </div>
+            </dl>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <Button href={routes.hrHub360}>Към продукта</Button>
               <Button href={routes.services} variant="secondary">
-                Към услугите
+                Клиентски системи
               </Button>
             </div>
-          </Surface>
-          <Surface className="p-6 sm:p-8">
-            <h2 className="text-2xl text-foreground">Собствени продукти</h2>
-            <p className="mt-4 text-base leading-relaxed text-muted">
-              Паралелно изграждаме собствени системи. HR HUB 360 е първият
-              публичен продукт — десктоп HR система за българския пазар, в
-              активна разработка.
-            </p>
-            <div className="mt-6">
-              <Button href={routes.products} variant="secondary">
-                Към продуктите
-              </Button>
-            </div>
-          </Surface>
-        </div>
-        <div className="mt-12 max-w-3xl">
-          {projects.map((project) => (
-            <ProjectCard key={project.slug} project={project} />
-          ))}
-        </div>
+          </div>
+          {product ? <HrHubShowcase /> : null}
+        </Container>
+      </section>
+      <Container className="py-16 sm:py-20">
+        <p className="coord">CLIENT WORK</p>
+        <h2 className="mt-4 text-3xl text-foreground">Решения за клиенти</h2>
+        <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted">
+          Изграждаме софтуер по поръчка според конкретна задача. Не публикуваме
+          имена, логота или метрики без съгласие. Когато има публично
+          представим проект, той ще се появи тук.
+        </p>
       </Container>
       <ContactCta />
     </>
