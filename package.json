@@ -2,13 +2,16 @@
   "name": "sofira-systems",
   "version": "0.1.0",
   "private": true,
+  "description": "Official website of SOFIRA SYSTEMS.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "lucide-react": "^1.31.0",
     "next": "16.3.1",
     "react": "19.2.8",
     "react-dom": "19.2.8"

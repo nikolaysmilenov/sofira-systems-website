@@ -1,34 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SOFIRA SYSTEMS
 
-## Getting Started
+Официален уебсайт на [SOFIRA SYSTEMS](https://sofirasystems.com).
 
-First, run the development server:
+Сайтът е изграден с Next.js, TypeScript и Tailwind CSS. Езикът на съдържанието е български.
+
+## Разработка
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Отворете [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Проверки
 
-## Learn More
+```bash
+npm run typecheck
+npm run lint
+npm run build
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Среда
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Копирайте `.env.example` към `.env.local` при нужда.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```text
+NEXT_PUBLIC_SITE_URL=https://sofirasystems.com
+RESEND_API_KEY=
+CONTACT_FROM_EMAIL=
+CONTACT_TO_EMAIL=
+```
 
-## Deploy on Vercel
+`RESEND_API_KEY`, `CONTACT_FROM_EMAIL` и `CONTACT_TO_EMAIL` се използват само на сървъра. Формата валидира данните и не твърди, че съобщението е изпратено, докато доставчикът не бъде свързан.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Публикуване
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Проектът е Next.js приложение и е готов за хостинг на Vercel. Официалният домейн е [sofirasystems.com](https://sofirasystems.com).
+
+Преди публикуване задайте `NEXT_PUBLIC_SITE_URL=https://sofirasystems.com`. Имейл изпращането остава изключено, докато не се попълнят сървърните променливи за контакт. DNS и връзката на домейна се правят в хостинг акаунта.
+
+
+## Структура
+
+- `src/app` — страници, метаданни, API маршрути
+- `src/components` — оформление, навигация, секции и UI
+- `src/data` — навигация, услуги, продукти и проекти
+- `public/brand` — официално лого
