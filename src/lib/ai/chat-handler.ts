@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { AI_LIMITS, readAiChatMessages, toModelInput } from "@/lib/ai/chat";
 import { resolveConsultantGuard } from "@/lib/ai/guardrails";
 import { buildInternalTurnHint, classifyIntent } from "@/lib/ai/intent";
+import { classifyLeadStage, userConversationText } from "@/lib/ai/qualification";
 import {
   AiProviderError,
   getAiProvider,
@@ -88,7 +89,7 @@ export async function handleAiChatPost(
     }
 
     const lastUser = messages[messages.length - 1]?.content ?? "";
-    const guard = resolveConsultantGuard(lastUser);
+    const guard = resolveConsultantGuard(lastUser, messages);
     if (guard.action === "block") {
       return json(okReply(guard.reply, guard.cta), 200);
     }
@@ -97,9 +98,10 @@ export async function handleAiChatPost(
       return json({ status: "error", message: CONFIG_ERROR }, 503);
     }
 
-    const intent = classifyIntent(lastUser);
+    const intent = classifyIntent(userConversationText(messages) || lastUser);
+    const stage = classifyLeadStage(messages);
     const result = await provider.complete({
-      instructions: `${buildSofiraAiInstructions()}\n\n${buildInternalTurnHint(intent)}`,
+      instructions: `${buildSofiraAiInstructions()}\n\n${buildInternalTurnHint(intent, stage)}`,
       messages: toModelInput(messages),
       maxOutputTokens: AI_LIMITS.maxOutputTokens,
     });
