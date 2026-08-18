@@ -107,26 +107,119 @@ export function ContactForm({ defaultInquiry = "" }: ContactFormProps) {
   const intakeChoices = extraInquiry
     ? [...intakeOptions, extraInquiry]
     : intakeOptions;
+  const inquiryHintId = `${formId}-inquiry-hint`;
+  const inquiryErrorId = `${formId}-inquiry-error`;
+  const inquiryDescribedBy = [
+    defaultInquiry && preselectedLabel ? inquiryHintId : null,
+    errors.inquiry ? inquiryErrorId : null,
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   return (
     <form
-      className="relative rounded-[1.4rem] border border-border bg-white p-5 shadow-[0_20px_50px_rgb(12_23_48_/_0.06)] sm:p-8"
+      className="relative min-w-0 border border-border bg-white p-5 sm:p-8"
       onSubmit={onSubmit}
       noValidate
       method="post"
       action="/kontakt"
       aria-busy={disabled}
     >
-      <div className="grid gap-5 sm:grid-cols-2">
+      <p className="coord">PROJECT INTAKE</p>
+      <h2 className="mt-3 text-2xl text-foreground sm:text-3xl">
+        Заявете проект
+      </h2>
+
+      <div className="mt-8">
+        <p
+          id={`${formId}-inquiry-label`}
+          className="block text-sm font-medium text-foreground"
+        >
+          Какво искате да изградим?
+          <span className="text-subtle"> — по избор</span>
+        </p>
+        <div
+          role="group"
+          aria-labelledby={`${formId}-inquiry-label`}
+          aria-describedby={inquiryDescribedBy || undefined}
+          className="mt-3 flex min-w-0 flex-wrap gap-2"
+        >
+          {intakeChoices.map((option) => {
+            const selected = values.inquiry === option.id;
+            return (
+              <button
+                key={option.id}
+                type="button"
+                aria-pressed={selected}
+                disabled={disabled}
+                onClick={() =>
+                  setValues((current) => ({
+                    ...current,
+                    inquiry: selected ? "" : option.id,
+                  }))
+                }
+                className={cn(
+                  "inline-flex min-h-11 items-center rounded-md border px-4 py-2 text-left text-sm font-medium transition-colors",
+                  selected
+                    ? "border-electric bg-electric text-white"
+                    : "border-border bg-navy-950 text-foreground hover:border-electric/40",
+                )}
+              >
+                {option.label}
+              </button>
+            );
+          })}
+        </div>
+        {defaultInquiry && preselectedLabel ? (
+          <p id={inquiryHintId} className="mt-2 text-sm text-subtle">
+            Темата е предварително избрана: {preselectedLabel}. Можете да я
+            промените.
+          </p>
+        ) : null}
+        {errors.inquiry ? (
+          <p id={inquiryErrorId} className="mt-2 text-sm text-red-700" role="alert">
+            {errors.inquiry}
+          </p>
+        ) : null}
+      </div>
+
+      <div className="mt-8">
+        <label
+          htmlFor={`${formId}-message`}
+          className="block text-sm font-medium text-foreground"
+        >
+          Какъв проблем искате да решите?
+          <span className="text-electric"> *</span>
+        </label>
+        <textarea
+          id={`${formId}-message`}
+          name="message"
+          rows={7}
+          required
+          disabled={disabled}
+          value={values.message}
+          placeholder="Опишете накратко как работите днес, какво ви създава проблем и какво искате да стане по-добре."
+          aria-invalid={errors.message ? true : undefined}
+          aria-describedby={errors.message ? `${formId}-message-error` : undefined}
+          onChange={(event) =>
+            setValues((current) => ({ ...current, message: event.target.value }))
+          }
+          className={cn(fieldClassName(Boolean(errors.message)), "min-h-40 resize-y")}
+        />
+        {errors.message ? (
+          <p id={`${formId}-message-error`} className="mt-2 text-sm text-red-700" role="alert">
+            {errors.message}
+          </p>
+        ) : null}
+      </div>
+
+      <div className="mt-8 grid gap-5 sm:grid-cols-2">
         {fields.map((field) => {
           const errorId = `${formId}-${field.name}-error`;
           const error = errors[field.name];
 
           return (
-            <div
-              key={field.name}
-              className={field.name === "company" || field.name === "phone" ? "sm:col-span-1" : undefined}
-            >
+            <div key={field.name} className="min-w-0">
               <label
                 htmlFor={`${formId}-${field.name}`}
                 className="block text-sm font-medium text-foreground"
@@ -157,97 +250,13 @@ export function ContactForm({ defaultInquiry = "" }: ContactFormProps) {
                 className={fieldClassName(Boolean(error))}
               />
               {error ? (
-        <p id={errorId} className="mt-2 text-sm text-red-700" role="alert">
+                <p id={errorId} className="mt-2 text-sm text-red-700" role="alert">
                   {error}
                 </p>
               ) : null}
             </div>
           );
         })}
-      </div>
-
-      <div className="mt-5">
-        <p
-          id={`${formId}-inquiry-label`}
-          className="block text-sm font-medium text-foreground"
-        >
-          Какво искате да изградим?
-          <span className="text-subtle"> — по избор</span>
-        </p>
-        <div
-          role="group"
-          aria-labelledby={`${formId}-inquiry-label`}
-          className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2"
-        >
-          {intakeChoices.map((option) => {
-            const selected = values.inquiry === option.id;
-            return (
-              <button
-                key={option.id}
-                type="button"
-                aria-pressed={selected}
-                disabled={disabled}
-                onClick={() =>
-                  setValues((current) => ({
-                    ...current,
-                    inquiry: selected ? "" : option.id,
-                  }))
-                }
-                className={cn(
-                  "min-h-12 rounded-xl border px-4 py-3 text-left text-sm font-medium transition-colors",
-                  selected
-                    ? "border-electric bg-electric text-white"
-                    : "border-border bg-navy-950 text-foreground hover:border-electric/40",
-                )}
-              >
-                {option.label}
-              </button>
-            );
-          })}
-        </div>
-        {defaultInquiry && preselectedLabel ? (
-          <p id={`${formId}-inquiry-hint`} className="mt-2 text-sm text-subtle">
-            Темата е предварително избрана: {preselectedLabel}. Можете да я
-            промените.
-          </p>
-        ) : null}
-        {errors.inquiry ? (
-          <p
-            id={`${formId}-inquiry-error`}
-            className="mt-2 text-sm text-red-700"
-            role="alert"
-          >
-            {errors.inquiry}
-          </p>
-        ) : null}
-      </div>
-
-      <div className="mt-5">
-        <label
-          htmlFor={`${formId}-message`}
-          className="block text-sm font-medium text-foreground"
-        >
-          Съобщение<span className="text-electric"> *</span>
-        </label>
-        <textarea
-          id={`${formId}-message`}
-          name="message"
-          rows={6}
-          required
-          disabled={disabled}
-          value={values.message}
-          aria-invalid={errors.message ? true : undefined}
-          aria-describedby={errors.message ? `${formId}-message-error` : undefined}
-          onChange={(event) =>
-            setValues((current) => ({ ...current, message: event.target.value }))
-          }
-          className={cn(fieldClassName(Boolean(errors.message)), "resize-y")}
-        />
-        {errors.message ? (
-          <p id={`${formId}-message-error`} className="mt-2 text-sm text-red-700" role="alert">
-            {errors.message}
-          </p>
-        ) : null}
       </div>
 
       <div className="sr-only" aria-hidden="true">
@@ -266,18 +275,18 @@ export function ContactForm({ defaultInquiry = "" }: ContactFormProps) {
       </div>
 
       {status.type === "success" ? (
-        <p className="mt-5 rounded-md border border-cyan/30 bg-electric/10 px-4 py-3 text-sm text-foreground" role="status">
+        <p className="mt-6 rounded-md border border-cyan/30 bg-electric/10 px-4 py-3 text-sm text-foreground" role="status">
           Запитването беше изпратено успешно. Ще се свържем с вас.
         </p>
       ) : null}
 
       {status.type === "error" ? (
-        <p className="mt-5 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700" role="alert">
+        <p className="mt-6 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700" role="alert">
           {status.message}
         </p>
       ) : null}
 
-      <div className="mt-6">
+      <div className="mt-8">
         <Button type="submit" disabled={disabled} className="w-full sm:w-auto">
           {disabled ? "Изпращане…" : ctaCopy.requestProject}
         </Button>

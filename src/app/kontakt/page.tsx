@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { AskSofiraAi } from "@/components/contact/ask-sofira-ai";
 import { ContactForm } from "@/components/contact/contact-form";
 import { PageHero } from "@/components/sections/page-hero";
 import { Container } from "@/components/ui/container";
@@ -8,10 +9,17 @@ import { createPageMetadata } from "@/lib/metadata";
 export const metadata: Metadata = createPageMetadata({
   title: "Заявете проект",
   description:
-    "Заявете проект към SOFIRA SYSTEMS — софтуерна система, автоматизация, AI решение, дигитална платформа или информация за HR HUB 360.",
+    "Опишете как работите днес, какво искате да подобрите и какъв резултат търсите. SOFIRA SYSTEMS разглежда запитването и уточнява обхвата.",
   path: "/kontakt",
   ogTitle: "Заявете проект | SOFIRA SYSTEMS",
 });
+
+const nextSteps = [
+  { index: "01", title: "Разглеждаме нуждата" },
+  { index: "02", title: "Уточняваме процеса и обхвата" },
+  { index: "03", title: "Предлагаме подходяща архитектура" },
+  { index: "04", title: "Обсъждаме следващата стъпка" },
+] as const;
 
 export default async function ContactPage({
   searchParams,
@@ -25,28 +33,36 @@ export default async function ContactPage({
     <>
       <PageHero
         tone="deep"
-        eyebrow="Заявете проект"
-        title="Какво искате да изградим?"
-        description="Кратко запитване е достатъчно. Изберете типа проект, ако вече знаете посоката. Ще уточним обхвата след това."
+        eyebrow="INTAKE"
+        title="Нека превърнем процеса ви в система."
+        description="Опишете как работите днес, какво искате да подобрите и какъв резултат търсите."
       />
-      <Container className="grid gap-12 py-14 sm:py-16 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:py-20">
+      <Container className="grid min-w-0 gap-12 py-14 sm:py-16 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-16 lg:py-20">
         <ContactForm
           key={defaultInquiry || "general"}
           defaultInquiry={defaultInquiry}
         />
-        <aside className="lg:pt-2">
-          <p className="coord">INTAKE</p>
-          <h2 className="mt-4 text-2xl text-foreground">Какво следва</h2>
-          <ol className="mt-6 space-y-5 text-sm leading-relaxed text-muted">
-            <li>01 — Изберете тип проект, ако вече имате посока.</li>
-            <li>02 — Опишете задачата с име, имейл и кратко съобщение.</li>
-            <li>03 — SOFIRA SYSTEMS преглежда запитването и уточнява обхвата.</li>
-            <li>04 — Не обещаваме срок за отговор, защото той зависи от задачата.</li>
+        <aside className="min-w-0 lg:pt-2">
+          <p className="coord">NEXT</p>
+          <h2 className="mt-4 text-2xl text-foreground sm:text-3xl">
+            Какво следва?
+          </h2>
+          <ol className="mt-8 divide-y divide-border border-y border-border">
+            {nextSteps.map((step) => (
+              <li
+                key={step.index}
+                className="grid grid-cols-[3.25rem_minmax(0,1fr)] items-baseline gap-3 py-5"
+              >
+                <span className="font-display text-xl text-electric">
+                  {step.index}
+                </span>
+                <span className="text-base text-foreground">{step.title}</span>
+              </li>
+            ))}
           </ol>
-          <p className="mt-8 text-sm leading-relaxed text-subtle">
-            Ако предпочитате общ разговор, можете просто да се свържете с нас
-            през същата форма.
-          </p>
+          <div className="mt-10">
+            <AskSofiraAi />
+          </div>
         </aside>
       </Container>
     </>
