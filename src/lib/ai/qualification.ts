@@ -10,8 +10,21 @@ const SIGNAL_PATTERNS = {
   tools: /excel|sap|erp|\bcrm\b/i,
   desired: /искам|нуждая|управлявам|система|автомат|изградете|направите|need|want/i,
   problem: /проблем|грешк|губи|ръчн|разпил|бав|хаос/i,
-  project: /конкретен проект|заявя проект|как да започнем|готов съм|ready to (start|inquire)/i,
+  project:
+    /конкретен проект|заявя проект|как да започнем|искам да започнем|готов съм|ready to (start|inquire)/i,
 } as const;
+
+export function isHighIntentTurn(text: string): boolean {
+  const stage = classifyLeadStage([{ role: "user", content: text }]);
+  if (stage === "HIGH_INTENT") {
+    return true;
+  }
+
+  return (
+    /конкретен проект|искам да започнем|как да започнем|искам да заявя проект/i.test(text) &&
+    /\d+\s*(потребител|служител|user)/i.test(text)
+  );
+}
 
 export function userConversationText(messages: AiChatMessage[]): string {
   return messages

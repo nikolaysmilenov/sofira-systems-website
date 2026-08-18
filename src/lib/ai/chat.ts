@@ -4,11 +4,14 @@ import { formatUntrustedUserContent } from "@/lib/ai/guardrails";
 export const AI_LIMITS = {
   maxBodyBytes: 20_000,
   maxMessageLength: 1_500,
-  maxMessages: 12,
+  maxMessages: 24,
   maxOutputTokens: 1200,
   rateLimit: 8,
   rateWindowMs: 60_000,
 } as const;
+
+export const CONVERSATION_LIMIT_REPLY =
+  "Разговорът стана твърде дълъг за този прозорец. Моля, започнете нов разговор или изпратете кратко запитване през формата за контакт.";
 
 export type AiChatRole = "user" | "assistant";
 
@@ -17,6 +20,10 @@ export type AiChatMessage = {
   content: string;
   cta?: "contact" | "hr-hub" | "product";
 };
+
+export type AiChatParseResult =
+  | { ok: true; messages: AiChatMessage[] }
+  | { ok: false; reason: "invalid" | "conversation_limit" | "message_limit"; lastUser: string };
 
 export function inferInquiryTopic(text: string): string | undefined {
   return inquiryTopicFromIntent(classifyIntent(text));
@@ -31,44 +38,61 @@ export function toModelInput(messages: AiChatMessage[]): AiChatMessage[] {
 }
 
 export function readAiChatMessages(value: unknown): AiChatMessage[] | null {
+  const parsed = parseAiChatPayload(value);
+  return parsed.ok ? parsed.messages : null;
+}
+
+export function parseAiChatPayload(value: unknown): AiChatParseResult {
   if (typeof value !== "object" || value === null) {
-    return null;
+    return { ok: false, reason: "invalid", lastUser: "" };
   }
 
   const messages = (value as { messages?: unknown }).messages;
-  if (!Array.isArray(messages) || messages.length === 0 || messages.length > AI_LIMITS.maxMessages) {
-    return null;
+  if (!Array.isArray(messages) || messages.length === 0) {
+    return { ok: false, reason: "invalid", lastUser: "" };
   }
 
   const parsed: AiChatMessage[] = [];
 
   for (const item of messages) {
     if (typeof item !== "object" || item === null) {
-      return null;
+      return { ok: false, reason: "invalid", lastUser: lastUserFrom(parsed) };
     }
 
     const role = (item as { role?: unknown }).role;
     const content = (item as { content?: unknown }).content;
 
     if (role !== "user" && role !== "assistant") {
-      return null;
+      return { ok: false, reason: "invalid", lastUser: lastUserFrom(parsed) };
     }
 
     if (typeof content !== "string") {
-      return null;
+      return { ok: false, reason: "invalid", lastUser: lastUserFrom(parsed) };
     }
 
     const trimmed = content.trim();
-    if (!trimmed || trimmed.length > AI_LIMITS.maxMessageLength) {
-      return null;
+    if (!trimmed) {
+      return { ok: false, reason: "invalid", lastUser: lastUserFrom(parsed) };
+    }
+
+    if (trimmed.length > AI_LIMITS.maxMessageLength) {
+      return { ok: false, reason: "message_limit", lastUser: role === "user" ? trimmed : lastUserFrom(parsed) };
     }
 
     parsed.push({ role, content: trimmed });
   }
 
   if (parsed[parsed.length - 1]?.role !== "user") {
-    return null;
+    return { ok: false, reason: "invalid", lastUser: lastUserFrom(parsed) };
   }
 
-  return parsed;
+  if (parsed.length > AI_LIMITS.maxMessages) {
+    return { ok: false, reason: "conversation_limit", lastUser: lastUserFrom(parsed) };
+  }
+
+  return { ok: true, messages: parsed };
+}
+
+function lastUserFrom(messages: AiChatMessage[]): string {
+  return [...messages].reverse().find((message) => message.role === "user")?.content ?? "";
 }

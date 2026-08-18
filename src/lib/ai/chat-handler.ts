@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { AI_LIMITS, readAiChatMessages, toModelInput } from "@/lib/ai/chat";
-import { resolveConsultantGuard } from "@/lib/ai/guardrails";
+import { AI_LIMITS, CONVERSATION_LIMIT_REPLY, parseAiChatPayload, toModelInput } from "@/lib/ai/chat";
+import { isPromptInjection, isSecretProbe, resolveConsultantGuard, CONSULTANT_REPLIES } from "@/lib/ai/guardrails";
 import { buildInternalTurnHint, classifyIntent } from "@/lib/ai/intent";
 import { classifyLeadStage, userConversationText } from "@/lib/ai/qualification";
 import {
@@ -80,13 +80,37 @@ export async function handleAiChatPost(
       );
     }
 
-    const messages = readAiChatMessages(payload);
-    if (!messages) {
+    const parsed = parseAiChatPayload(payload);
+    if (!parsed.ok) {
+      if (parsed.reason === "conversation_limit") {
+        if (isPromptInjection(parsed.lastUser) || isSecretProbe(parsed.lastUser)) {
+          return json(
+            okReply(
+              isPromptInjection(parsed.lastUser)
+                ? CONSULTANT_REPLIES.injection
+                : CONSULTANT_REPLIES.secret,
+            ),
+            200,
+          );
+        }
+
+        return json(okReply(CONVERSATION_LIMIT_REPLY, "contact"), 200);
+      }
+
+      if (parsed.reason === "message_limit") {
+        return json(
+          { status: "invalid", message: "Съобщението е твърде дълго. Моля, съкратете го." },
+          413,
+        );
+      }
+
       return json(
         { status: "invalid", message: "Невалидно съдържание на заявката." },
         400,
       );
     }
+
+    const messages = parsed.messages;
 
     const lastUser = messages[messages.length - 1]?.content ?? "";
     const guard = resolveConsultantGuard(lastUser, messages);

@@ -87,7 +87,7 @@ export function buildInternalTurnHint(intent: ConsultantIntent, stage: LeadStage
     "Never ask «Как мога да ви помогна?». Never invent prices, clients, integrations, or product capabilities.",
     "HR HUB 360 is the only confirmed own product. Mention it only when the need is actually HR — not merely because employee count or Excel was mentioned.",
     stage === "HIGH_INTENT"
-      ? "The visitor is high-intent. Stop extra discovery. Explain that this is concrete enough to discuss as a real system and use CTA_CONTACT. Do not promise price, dates, or results."
+      ? "If the current message is about starting a concrete project, stop extra discovery and use CTA_CONTACT. If it is a new topical question (SAP, invoice AI, why SOFIRA, HR modules), answer that question first with one follow-up. Do not promise price, dates, or results."
       : "If details are still thin, ask one discovery question matched to the intent.",
     intentGuidance(intent),
   ].join("\n");
