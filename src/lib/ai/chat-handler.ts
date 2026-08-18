@@ -1,26 +1,20 @@
 import { NextResponse } from "next/server";
-import { AI_LIMITS, CONVERSATION_LIMIT_REPLY, parseAiChatPayload, toModelInput } from "@/lib/ai/chat";
+import { AI_LIMITS, parseAiChatPayload, toModelInput } from "@/lib/ai/chat";
+import { compactConversation } from "@/lib/ai/conversation";
 import { isPromptInjection, isSecretProbe, resolveConsultantGuard, CONSULTANT_REPLIES } from "@/lib/ai/guardrails";
 import { buildInternalTurnHint, classifyIntent } from "@/lib/ai/intent";
 import { classifyLeadStage, userConversationText } from "@/lib/ai/qualification";
 import {
-  AiProviderError,
   getAiProvider,
   type AiProvider,
 } from "@/lib/ai/provider";
-import { INCOMPLETE_FALLBACK, isIncompleteReply, sanitizeConsultantReply, type ConsultantCta } from "@/lib/ai/reply";
+import { COMPACT_CONTINUE, GRACEFUL_FALLBACK, isIncompleteReply, sanitizeConsultantReply, type ConsultantCta } from "@/lib/ai/reply";
 import { buildSofiraAiInstructions } from "@/lib/ai/system-prompt";
 import { rateLimit } from "@/lib/rate-limit";
 
 const jsonHeaders = {
   "Cache-Control": "no-store",
 };
-
-const CONFIG_ERROR =
-  "Консултантът все още не е конфигуриран. Можете да заявите проект през формата за контакт.";
-const QUOTA_ERROR =
-  "Достигнат е лимитът за заявки към консултанта. Моля, опитайте отново след малко.";
-const GENERIC_ERROR = "Възникна проблем при отговора. Моля, опитайте отново.";
 
 export function json(
   body: Record<string, unknown>,
@@ -37,6 +31,7 @@ export async function handleAiChatPost(
   request: Request,
   provider: AiProvider = getAiProvider(),
 ) {
+  let compacted = false;
   try {
     const clientKey = `ai:${getClientKey(request)}`;
     const limit = rateLimit(clientKey, AI_LIMITS.rateLimit, AI_LIMITS.rateWindowMs);
@@ -94,7 +89,7 @@ export async function handleAiChatPost(
           );
         }
 
-        return json(okReply(CONVERSATION_LIMIT_REPLY, "contact"), 200);
+        return json(okReply(GRACEFUL_FALLBACK), 200);
       }
 
       if (parsed.reason === "message_limit") {
@@ -110,7 +105,9 @@ export async function handleAiChatPost(
       );
     }
 
-    const messages = parsed.messages;
+    const originalCount = parsed.messages.length;
+    const messages = compactConversation(parsed.messages);
+    compacted = originalCount > messages.length;
 
     const lastUser = messages[messages.length - 1]?.content ?? "";
     const guard = resolveConsultantGuard(lastUser, messages);
@@ -119,33 +116,29 @@ export async function handleAiChatPost(
     }
 
     if (!provider.isConfigured()) {
-      return json({ status: "error", message: CONFIG_ERROR }, 503);
+      return json(okReply(compacted ? COMPACT_CONTINUE : GRACEFUL_FALLBACK), 200);
     }
 
     const intent = classifyIntent(userConversationText(messages) || lastUser);
     const stage = classifyLeadStage(messages);
+    const compactHint = compacted
+      ? "\n\nA compact summary of earlier turns is included. Continue naturally from that context. Never mention conversation limits, token limits, configuration, or providers."
+      : "";
+
     const result = await provider.complete({
-      instructions: `${buildSofiraAiInstructions()}\n\n${buildInternalTurnHint(intent, stage)}`,
+      instructions: `${buildSofiraAiInstructions()}\n\n${buildInternalTurnHint(intent, stage)}${compactHint}`,
       messages: toModelInput(messages),
       maxOutputTokens: AI_LIMITS.maxOutputTokens,
     });
 
     const sanitized = sanitizeConsultantReply(result.text);
     if (!sanitized.reply || isIncompleteReply(sanitized.reply, result.finishReason)) {
-      return json(okReply(INCOMPLETE_FALLBACK, "contact"), 200);
+      return json(okReply(compacted ? COMPACT_CONTINUE : GRACEFUL_FALLBACK), 200);
     }
 
     return json(okReply(sanitized.reply, sanitized.cta), 200);
-  } catch (error) {
-    if (error instanceof AiProviderError && error.code === "not_configured") {
-      return json({ status: "error", message: CONFIG_ERROR }, 503);
-    }
-
-    if (error instanceof AiProviderError && error.code === "quota") {
-      return json({ status: "error", message: QUOTA_ERROR }, 429);
-    }
-
-    return json({ status: "error", message: GENERIC_ERROR }, 500);
+  } catch {
+    return json(okReply(compacted ? COMPACT_CONTINUE : GRACEFUL_FALLBACK), 200);
   }
 }
 

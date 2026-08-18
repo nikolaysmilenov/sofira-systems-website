@@ -5,7 +5,8 @@ import { usePathname } from "next/navigation";
 import { AiMessageContent } from "@/components/ai/ai-message-content";
 import { contactPath, routes } from "@/data/navigation";
 import { inferInquiryTopic, type AiChatMessage } from "@/lib/ai/chat";
-import { CTA_LINKS, type ConsultantCta } from "@/lib/ai/reply";
+import { GRACEFUL_FALLBACK, CTA_LINKS, type ConsultantCta } from "@/lib/ai/reply";
+import { INTERNAL_LEAK_PATTERN } from "@/lib/ai/conversation";
 import { cn } from "@/lib/cn";
 
 const WELCOME =
@@ -102,7 +103,7 @@ export function SofiraAi() {
 
       setMessages([...nextMessages, { role: "assistant", content: reply, cta }]);
     } catch {
-      setError("Възникна проблем при отговора. Моля, опитайте отново.");
+      setError(GRACEFUL_FALLBACK);
     } finally {
       setPending(false);
     }
@@ -301,9 +302,12 @@ function getErrorMessage(payload: unknown): string {
   if (typeof payload === "object" && payload !== null) {
     const message = (payload as { message?: unknown }).message;
     if (typeof message === "string" && message.trim()) {
+      if (INTERNAL_LEAK_PATTERN.test(message) || /не е конфигуриран|твърде дълъг за този прозорец/i.test(message)) {
+        return GRACEFUL_FALLBACK;
+      }
       return message;
     }
   }
 
-  return "Възникна проблем при отговора. Моля, опитайте отново.";
+  return GRACEFUL_FALLBACK;
 }

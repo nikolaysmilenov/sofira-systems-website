@@ -1,7 +1,12 @@
 export type ConsultantCta = "contact" | "hr-hub" | "product";
 
-export const INCOMPLETE_FALLBACK =
-  "Не успях да завърша пълния отговор. Моля, задайте въпроса отново накратко. Ако имате конкретен проект, можете да изпратите запитване през формата за контакт.";
+export const GRACEFUL_FALLBACK =
+  "В момента не мога да дам надежден отговор на този въпрос. Мога обаче да помогна с конкретна информация за услугите, HR HUB 360 или възможен софтуерен проект.\n\nКакво искате да подобрите в работата на компанията?";
+
+export const COMPACT_CONTINUE =
+  "Разбрах контекста дотук. Нека го сведем до следващата практическа стъпка.\n\nКой процес искате да подобрите първо?";
+
+export const INCOMPLETE_FALLBACK = GRACEFUL_FALLBACK;
 
 export const CTA_LINKS: Record<ConsultantCta, { href: string; label: string }> = {
   contact: { href: "/kontakt", label: "Заявете проект" },

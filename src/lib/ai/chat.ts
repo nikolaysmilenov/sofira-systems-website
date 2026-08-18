@@ -5,13 +5,11 @@ export const AI_LIMITS = {
   maxBodyBytes: 20_000,
   maxMessageLength: 1_500,
   maxMessages: 24,
+  maxAcceptedMessages: 48,
   maxOutputTokens: 1200,
   rateLimit: 8,
   rateWindowMs: 60_000,
 } as const;
-
-export const CONVERSATION_LIMIT_REPLY =
-  "Разговорът стана твърде дълъг за този прозорец. Моля, започнете нов разговор или изпратете кратко запитване през формата за контакт.";
 
 export type AiChatRole = "user" | "assistant";
 
@@ -86,8 +84,15 @@ export function parseAiChatPayload(value: unknown): AiChatParseResult {
     return { ok: false, reason: "invalid", lastUser: lastUserFrom(parsed) };
   }
 
-  if (parsed.length > AI_LIMITS.maxMessages) {
-    return { ok: false, reason: "conversation_limit", lastUser: lastUserFrom(parsed) };
+  if (parsed.length > AI_LIMITS.maxAcceptedMessages) {
+    const bounded = parsed.slice(-AI_LIMITS.maxAcceptedMessages);
+    while (bounded.length > 0 && bounded[bounded.length - 1]?.role !== "user") {
+      bounded.pop();
+    }
+    if (bounded.length === 0 || bounded[bounded.length - 1]?.role !== "user") {
+      return { ok: false, reason: "invalid", lastUser: lastUserFrom(parsed) };
+    }
+    return { ok: true, messages: bounded };
   }
 
   return { ok: true, messages: parsed };

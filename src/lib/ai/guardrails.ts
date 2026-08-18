@@ -32,6 +32,17 @@ const CUSTOM_INTERNAL_PATTERN =
   /вътрешн[\s\S]{0,24}систем|систем[\s\S]{0,48}(задач|документ|клиент)|задач[\s\S]{0,40}документ[\s\S]{0,40}клиент/i;
 const START_PROJECT_PATTERN =
   /как да започнем|имам конкретен проект|искам да започнем|искам да заявя проект/i;
+const SERVICES_PATTERN =
+  /какви услуги|какво предлагате|какво изграждате|какво правите като услуги|какво може да изгради/i;
+const UNCERTAIN_NEED_PATTERN =
+  /не знам точно какъв софтуер|какъв софтуер ми трябва|оправим работата|не знам (точно )?откъде да започна/i;
+const BUSINESS_HELP_PATTERN =
+  /какво можете да направите за (моя |нашия )?бизнес|как можете да помогнете на (моя |нашия )?бизнес/i;
+const AI_VS_AUTOMATION_PATTERN =
+  /не знам дали ми трябва.{0,48}(ai|аи|изкуствен).{0,48}автомат|не знам дали.{0,24}автомат.{0,24}(ai|аи|изкуствен)/i;
+const RESUME_PROJECT_PATTERN =
+  /върн(?:ем|ем се|аме се|ане) към|обратно към (проекта|системата)|да продължим с (проекта|системата|вътрешн)/i;
+const SIZE_PATTERN = /(\d+)\s*служител/i;
 
 export function buildExcelDiscovery(text: string): string {
   const knownDailyTeam =
@@ -66,8 +77,49 @@ export function buildAiInvoiceReply(text: string, english = false): string {
   ].join("\n\n");
 }
 
+export function isCustomBusinessScope(text: string): boolean {
+  const hits = [/клиент/i, /оферт/i, /задач/i, /документ/i].filter((pattern) =>
+    pattern.test(text),
+  ).length;
+  const internal = /вътрешн[\s\S]{0,40}систем|бизнес систем/i.test(text);
+  return hits >= 3 || (internal && hits >= 2);
+}
+
+export function isSizeOnlyTurn(text: string): boolean {
+  if (!SIZE_PATTERN.test(text)) {
+    return false;
+  }
+
+  if (
+    isHrProcessNeed(text) ||
+    isHrPeopleManagementNeed(text) ||
+    isCustomBusinessScope(text) ||
+    EXCEL_PATTERN.test(text) ||
+    CUSTOM_INTERNAL_PATTERN.test(text) ||
+    CRM_PROCESS_PATTERN.test(text) ||
+    CRM_PATTERN.test(text)
+  ) {
+    return false;
+  }
+
+  return text.trim().length < 140;
+}
+
 export function buildHrExcelReply(text: string): string {
-  const size = text.match(/(\d+)\s*служител/i)?.[1];
+  const size = text.match(SIZE_PATTERN)?.[1];
+  const hasLeave = /отпуск/i.test(text);
+  const hasAttendance = /присъств/i.test(text);
+  const hasDocs = /документ/i.test(text);
+
+  if (hasLeave && hasAttendance && !hasDocs) {
+    const sizeBit = size ? `При ${size} служители, ` : "";
+    return [
+      `${sizeBit}когато отпуските и присъствията се управляват ръчно в Excel, има смисъл да се разгледа централизирана HR система като възможна посока.`,
+      "HR HUB 360 вече включва Служители, Отпуски и Присъствия / работно време, наред с останалите текущи модули.",
+      "Използвате ли отделни Excel файлове за отпуските и присъствията или един общ файл?",
+    ].join("\n\n");
+  }
+
   const sizeBit = size ? `При организация с ${size} служители ` : "";
 
   return [
@@ -75,6 +127,55 @@ export function buildHrExcelReply(text: string): string {
     "HR HUB 360 е наш собствен продукт в разработка и вече включва управление на служители, договори, документи, отпуски и присъствия / работно време.",
     "Тъй като продуктът все още е в разработка, не се продава през сайта. Можем да разгледаме конкретната ви нужда и да ви насочим към подходящия вариант.",
     "Кое от трите ви създава най-много ръчна работа в момента — отпуските, документите или присъствията?",
+  ].join("\n\n");
+}
+
+export function buildHrDiscoveryReply(text: string): string {
+  const size = text.match(SIZE_PATTERN)?.[1];
+  const processes: string[] = [];
+  if (/отпуск/i.test(text)) processes.push("отпуските");
+  if (/присъств/i.test(text)) processes.push("присъствията");
+  if (/документ/i.test(text)) processes.push("документите");
+  if (/договор/i.test(text)) processes.push("договорите");
+  const processBit =
+    processes.length > 0 ? processes.join(" и ") : "HR процесите";
+  const sizeBit = size ? `При ${size} служители ` : "";
+
+  return [
+    `${sizeBit}проблемите с ${processBit} са типична причина да се разгледа централизирана HR система.`,
+    "HR HUB 360 е собствен продукт на SOFIRA SYSTEMS в разработка и покрива тези процеси сред текущите модули.",
+    "Как управлявате тези процеси в момента — в Excel, на хартия или в друга система?",
+  ].join("\n\n");
+}
+
+export function buildCustomBusinessReply(text: string): string {
+  const hasExcel = EXCEL_PATTERN.test(text);
+  const parts: string[] = [];
+  if (/клиент/i.test(text)) parts.push("клиенти");
+  if (/оферт/i.test(text)) parts.push("оферти");
+  if (/задач/i.test(text)) parts.push("задачи");
+  if (/документ/i.test(text)) parts.push("документи");
+  const scope =
+    parts.length >= 2
+      ? parts.join(", ").replace(/, ([^,]+)$/, " и $1")
+      : "клиенти, оферти, задачи и документи";
+
+  return [
+    `Да. Това може да бъде проектирано като вътрешна бизнес система, която обединява ${scope} в едно място. Това не е готов продукт, а система по поръчка.`,
+    hasExcel
+      ? "Тъй като в момента използвате Excel, първата стъпка е да разберем как реално преминава информацията между тези процеси и къде се губи време или възникват грешки."
+      : "Първата стъпка е да разберем как реално преминава информацията между тези процеси и къде се губи време или възникват грешки.",
+    "Кои от тези процеси в момента ви създава най-много ръчна работа?",
+  ].join("\n\n");
+}
+
+export function buildSizeAcknowledgeReply(text: string): string {
+  const size = text.match(SIZE_PATTERN)?.[1];
+  const sizeBit = size ? `около ${size} служители` : "мащаба на екипа";
+
+  return [
+    `Разбрах — ${sizeBit}.`,
+    "За да насоча разговора правилно, кой процес в момента ви създава най-много ръчна работа или грешки?",
   ].join("\n\n");
 }
 
@@ -111,6 +212,16 @@ export const CONSULTANT_REPLIES = {
     "Първата стъпка е да уточним целта на проекта, какъв проблем решава и кои ще бъдат основните потребители. Оттам рамкираме процесите, данните и първоначалния обхват.\n\nКакъв е основният бизнес процес или проблем, който искате да решите с този софтуер?",
   whySofira:
     "SOFIRA SYSTEMS не се позиционира само като компания за изработка на сайтове. Фокусът ни е върху софтуерни системи, които решават конкретни бизнес процеси — от custom software и автоматизация до AI решения, дигитални платформи и собствени продукти като HR HUB 360.\n\nРаботим от процеса и нуждата към архитектурата и реалната система, вместо да започваме от готов шаблон. В работата влизат ясна архитектура, прозрачен процес, тестване и възможност за поддръжка и по-нататъшно развитие.\n\nНе публикуваме брой клиенти, награди, години опит или пазарна позиция. Ако ми опишете какво искате да подобрите, мога да ви кажа кой тип решение би бил най-подходящ.",
+  services:
+    "SOFIRA SYSTEMS изгражда софтуерни решения според конкретния бизнес процес — не само стандартни уебсайтове.\n\nОсновните направления са:\n• Софтуер по поръчка\n• Дигитални платформи\n• Автоматизация\n• AI решения\n• Уеб приложения\n• Продуктова разработка\n\nРазработваме и собствени продукти, сред които HR HUB 360.\n\nАко ми кажете какво искате да подобрите, мога да ви насоча към най-подходящия тип решение.",
+  uncertainNeed:
+    "Това е напълно нормална отправна точка. Не е необходимо предварително да знаете дали ви трябва автоматизация, AI или цяла система.\n\nМожем да започнем от процеса — как работите сега, къде се губи време и кои действия се повтарят ръчно.\n\nКой процес в момента ви създава най-много работа или грешки?",
+  businessHelp:
+    "Можем да помогнем, като тръгнем от реалния ви процес — къде се губи време, къде има ръчна работа и какъв резултат искате.\n\nSOFIRA SYSTEMS изгражда софтуер по поръчка, автоматизация, AI решения, дигитални платформи и уеб приложения, както и собствени продукти като HR HUB 360.\n\nКой процес в компанията искате да подобрите първо?",
+  aiVsAutomation:
+    "Не е нужно предварително да избирате между AI и автоматизация. Често правилната посока се вижда след като разберем кой процес се повтаря ръчно и къде възникват грешки.\n\nКой процес в момента ви отнема най-много време?",
+  resumeProject:
+    "Разбрах контекста дотук. Връщаме се към практическата следваща стъпка по системата.\n\nКой процес искате да покрием първо — или как работите с него в момента?",
 } as const;
 
 export type ConsultantGuard =
@@ -179,33 +290,57 @@ export function resolveConsultantGuard(
   text: string,
   messages: AiChatMessage[] = [{ role: "user", content: text }],
 ): ConsultantGuard {
-  if (isSecretProbe(text) || isPromptInjection(text)) {
+  const last = text;
+  const all = userConversationText(messages) || last;
+
+  if (isSecretProbe(last) || isPromptInjection(last)) {
     return {
       action: "block",
-      reply: isPromptInjection(text)
+      reply: isPromptInjection(last)
         ? CONSULTANT_REPLIES.injection
         : CONSULTANT_REPLIES.secret,
     };
   }
 
-  if (PRICE_PATTERN.test(text)) {
+  if (PRICE_PATTERN.test(last)) {
     return { action: "block", reply: CONSULTANT_REPLIES.price, cta: "contact" };
   }
 
-  if (CLIENTS_PATTERN.test(text)) {
+  if (CLIENTS_PATTERN.test(last)) {
     return { action: "block", reply: CONSULTANT_REPLIES.clients };
   }
 
-  if (VOLUME_PATTERN.test(text)) {
+  if (VOLUME_PATTERN.test(last)) {
     return { action: "block", reply: CONSULTANT_REPLIES.volume };
   }
 
-  if (INTEGRATION_PATTERN.test(text) && !AI_INVOICE_PATTERN.test(text)) {
+  if (INTEGRATION_PATTERN.test(last) && !AI_INVOICE_PATTERN.test(last)) {
     return { action: "block", reply: CONSULTANT_REPLIES.integration };
   }
 
-  const hasCrm = CRM_PATTERN.test(text);
-  const hasWarehouse = WAREHOUSE_PATTERN.test(text);
+  if (WHY_SOFIRA_PATTERN.test(last)) {
+    return { action: "block", reply: CONSULTANT_REPLIES.whySofira };
+  }
+
+  if (SERVICES_PATTERN.test(last)) {
+    return { action: "block", reply: CONSULTANT_REPLIES.services };
+  }
+
+  if (AI_VS_AUTOMATION_PATTERN.test(last)) {
+    return { action: "block", reply: CONSULTANT_REPLIES.aiVsAutomation };
+  }
+
+  if (UNCERTAIN_NEED_PATTERN.test(last) || BUSINESS_HELP_PATTERN.test(last)) {
+    return {
+      action: "block",
+      reply: BUSINESS_HELP_PATTERN.test(last)
+        ? CONSULTANT_REPLIES.businessHelp
+        : CONSULTANT_REPLIES.uncertainNeed,
+    };
+  }
+
+  const hasCrm = CRM_PATTERN.test(last);
+  const hasWarehouse = WAREHOUSE_PATTERN.test(last);
   if (hasCrm && hasWarehouse) {
     return { action: "block", reply: CONSULTANT_REPLIES.crmWarehouse };
   }
@@ -216,62 +351,73 @@ export function resolveConsultantGuard(
     return { action: "block", reply: CONSULTANT_REPLIES.crm };
   }
 
-  if (CRM_PROCESS_PATTERN.test(text) && !isHrProcessNeed(text)) {
-    return { action: "block", reply: CONSULTANT_REPLIES.crmProcess };
-  }
-
-  if (WHY_SOFIRA_PATTERN.test(text)) {
-    return { action: "block", reply: CONSULTANT_REPLIES.whySofira };
-  }
-
-  if (HR_HUB_PATTERN.test(text) && HR_UPCOMING_PATTERN.test(text)) {
+  if (HR_HUB_PATTERN.test(last) && HR_UPCOMING_PATTERN.test(last)) {
     return { action: "block", reply: CONSULTANT_REPLIES.reports };
   }
 
-  if (HR_UPCOMING_PATTERN.test(text) && /кога|вече|имате ли|има ли|готов|do you have/i.test(text)) {
+  if (HR_UPCOMING_PATTERN.test(last) && /кога|вече|имате ли|има ли|готов|do you have/i.test(last)) {
     return { action: "block", reply: CONSULTANT_REPLIES.reports };
   }
 
-  if (HR_HUB_PATTERN.test(text)) {
-    return { action: "block", reply: buildHrHubCurrentReply(text) };
+  if (HR_HUB_PATTERN.test(last)) {
+    return { action: "block", reply: buildHrHubCurrentReply(all) };
   }
 
-  if (
-    EXCEL_PATTERN.test(text) &&
-    (isHrProcessNeed(text) || isHrPeopleManagementNeed(text)) &&
-    /\d+\s*служител/i.test(text)
-  ) {
-    return { action: "block", reply: buildHrExcelReply(text) };
-  }
-
-  if (
-    (isHrProcessNeed(text) || isHrPeopleManagementNeed(text)) &&
-    /\d+\s*служител/i.test(text)
-  ) {
-    return { action: "block", reply: buildHrHubNeedReply(text), cta: "hr-hub" };
-  }
-
-  if (EXCEL_PATTERN.test(text) && !isHrProcessNeed(text) && !HR_HUB_PATTERN.test(text)) {
-    return { action: "block", reply: buildExcelDiscovery(text) };
-  }
-
-  if (AI_INVOICE_PATTERN.test(text) && /ai|изкуствен|автомат|обработва|направите|чете|прочита|извлича|process|read|help|need/i.test(text)) {
-    const conversation = userConversationText(messages);
+  if (AI_INVOICE_PATTERN.test(last) && /ai|изкуствен|автомат|обработва|направите|чете|прочита|извлича|process|read|help|need/i.test(last)) {
     return {
       action: "block",
-      reply: buildAiInvoiceReply(text, isMostlyEnglish(conversation)),
+      reply: buildAiInvoiceReply(last, isMostlyEnglish(all)),
     };
   }
 
-  if (isHighIntentTurn(text)) {
+  if (RESUME_PROJECT_PATTERN.test(last) && (SIZE_PATTERN.test(all) || isCustomBusinessScope(all) || CUSTOM_INTERNAL_PATTERN.test(all) || isHighIntentTurn(all))) {
+    return { action: "block", reply: CONSULTANT_REPLIES.resumeProject };
+  }
+
+  if (isCustomBusinessScope(all) && !isHrProcessNeed(all)) {
+    return { action: "block", reply: buildCustomBusinessReply(all) };
+  }
+
+  if (
+    CRM_PROCESS_PATTERN.test(last) &&
+    !isHrProcessNeed(last) &&
+    !isCustomBusinessScope(all)
+  ) {
+    return { action: "block", reply: CONSULTANT_REPLIES.crmProcess };
+  }
+
+  if (
+    EXCEL_PATTERN.test(all) &&
+    (isHrProcessNeed(all) || isHrPeopleManagementNeed(all)) &&
+    SIZE_PATTERN.test(all)
+  ) {
+    return { action: "block", reply: buildHrExcelReply(all) };
+  }
+
+  if (
+    (isHrProcessNeed(all) || isHrPeopleManagementNeed(all)) &&
+    SIZE_PATTERN.test(all)
+  ) {
+    return { action: "block", reply: buildHrDiscoveryReply(all), cta: "hr-hub" };
+  }
+
+  if (isSizeOnlyTurn(last) && !isHrProcessNeed(all) && !isCustomBusinessScope(all)) {
+    return { action: "block", reply: buildSizeAcknowledgeReply(last) };
+  }
+
+  if (EXCEL_PATTERN.test(last) && !isHrProcessNeed(all) && !HR_HUB_PATTERN.test(all) && !isCustomBusinessScope(all)) {
+    return { action: "block", reply: buildExcelDiscovery(all) };
+  }
+
+  if (isHighIntentTurn(last)) {
     return { action: "block", reply: CONSULTANT_REPLIES.highIntent, cta: "contact" };
   }
 
-  if (CUSTOM_INTERNAL_PATTERN.test(text) && !isHrProcessNeed(text)) {
+  if (CUSTOM_INTERNAL_PATTERN.test(all) && !isHrProcessNeed(all)) {
     return { action: "block", reply: CONSULTANT_REPLIES.customSoftware };
   }
 
-  if (START_PROJECT_PATTERN.test(text)) {
+  if (START_PROJECT_PATTERN.test(last)) {
     return { action: "block", reply: CONSULTANT_REPLIES.startProject };
   }
 
