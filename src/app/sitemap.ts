@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { legalNav, mainNav } from "@/data/navigation";
 import { products } from "@/data/products";
+import { projects } from "@/data/projects";
 import { getSiteUrl } from "@/lib/site-url";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -11,6 +12,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...mainNav.map((item) => item.href),
     ...legalNav.map((item) => item.href),
     ...products.map((product) => product.href),
+    ...projects.map((project) => project.href),
   ]);
 
   return [...paths].map((path) => ({

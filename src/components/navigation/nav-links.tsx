@@ -33,7 +33,7 @@ export function NavLinks({
               aria-current={current ? "page" : undefined}
               onClick={onNavigate}
               className={cn(
-                "inline-flex min-h-11 items-center rounded-md px-3 text-sm transition-colors",
+                "inline-flex min-h-11 items-center rounded-md px-2.5 text-sm transition-colors xl:px-3",
                 current
                   ? "bg-electric/8 font-medium text-foreground"
                   : "text-muted hover:bg-navy-800 hover:text-foreground",

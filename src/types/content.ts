@@ -88,14 +88,64 @@ export type Product = {
   seoDescription: string;
 };
 
-export type ProjectStatus = "in-development" | "published";
+export type ProjectKind =
+  | "client-project"
+  | "own-product"
+  | "internal-project"
+  | "public-platform";
+
+export type ProjectStatus =
+  | "in-production"
+  | "in-development"
+  | "internal-product"
+  | "public-platform"
+  | "ongoing";
+
+export type ArchitectureLayerId =
+  | "business"
+  | "application"
+  | "data"
+  | "automation"
+  | "ai"
+  | "market-data"
+  | "signal-engine"
+  | "risk-logic"
+  | "execution"
+  | "monitoring";
+
+export type ArchitectureLayer = {
+  id: ArchitectureLayerId;
+  label: string;
+  text: string;
+};
+
+export type CaseStudyCta = {
+  label: string;
+  href: string;
+};
 
 export type Project = {
   slug: string;
+  index: string;
   name: string;
   summary: string;
   href: string;
+  kind: ProjectKind;
   status: ProjectStatus;
+  seoTitle: string;
+  seoDescription: string;
+  context: string;
+  problem: string;
+  approach: string;
+  system: string;
+  architecture: ArchitectureLayer[];
+  result: string;
+  modules?: {
+    current: string[];
+    upcoming?: string[];
+  };
+  indexCta?: string;
+  ctas: CaseStudyCta[];
 };
 
 export type ProcessStep = {
@@ -107,6 +157,34 @@ export type ProcessStep = {
 export type Principle = {
   title: string;
   description: string;
+};
+
+export type TechnologyProjectRef = {
+  label: string;
+  href: string;
+};
+
+export type TechnologyItem = {
+  name: string;
+  role: string;
+  projects: TechnologyProjectRef[];
+};
+
+export type TechnologyCategory = {
+  id: string;
+  index: string;
+  coord: string;
+  title: string;
+  meaning: string;
+  items: TechnologyItem[];
+};
+
+export type TechnologyMapLayer = {
+  id: string;
+  label: string;
+  meaning: string;
+  technologies: string[];
+  example: TechnologyProjectRef;
 };
 
 export type InquiryOption = {

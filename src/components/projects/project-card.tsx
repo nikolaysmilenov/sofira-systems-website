@@ -1,7 +1,5 @@
 import Link from "next/link";
-import { Eyebrow } from "@/components/ui/eyebrow";
-import { Surface } from "@/components/ui/surface";
-import { ctaCopy, projectStatusLabel } from "@/data/labels";
+import { projectKindLabel, projectStatusLabel } from "@/data/labels";
 import { cn } from "@/lib/cn";
 import type { Project } from "@/types/content";
 
@@ -12,22 +10,28 @@ type ProjectCardProps = {
 
 export function ProjectCard({ project, className }: ProjectCardProps) {
   return (
-    <Surface className={cn("p-6 sm:p-8", className)}>
-      <Eyebrow>{projectStatusLabel[project.status]}</Eyebrow>
-      <h3 className="mt-4 text-2xl text-foreground">
+    <article className={cn("border-t border-border py-8 first:border-t-0 first:pt-0", className)}>
+      <p className="coord">PROJECT / {project.index}</p>
+      <p className="mt-3 font-display text-xs tracking-[0.16em] text-electric">
+        {projectKindLabel[project.kind]}
+      </p>
+      <h3 className="mt-3 text-2xl text-foreground sm:text-3xl">
         <Link href={project.href} className="transition-colors hover:text-electric-hover">
           {project.name}
         </Link>
       </h3>
-      <p className="mt-3 text-sm leading-relaxed text-muted">
+      <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted">
         {project.summary}
+      </p>
+      <p className="mt-4 text-[11px] tracking-[0.18em] text-subtle uppercase">
+        {projectStatusLabel[project.status]}
       </p>
       <Link
         href={project.href}
         className="mt-6 inline-flex min-h-11 items-center text-sm font-medium text-electric transition-colors hover:text-electric-hover"
       >
-        {ctaCopy.learnMore}
+        {project.indexCta ?? "Към историята"}
       </Link>
-    </Surface>
+    </article>
   );
 }

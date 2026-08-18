@@ -1,4 +1,9 @@
-import type { InquiryOption, ProductStatus, ProjectStatus } from "@/types/content";
+import type {
+  InquiryOption,
+  ProductStatus,
+  ProjectKind,
+  ProjectStatus,
+} from "@/types/content";
 
 export const productStatusLabel: Record<ProductStatus, string> = {
   available: "Наличен",
@@ -7,8 +12,18 @@ export const productStatusLabel: Record<ProductStatus, string> = {
 };
 
 export const projectStatusLabel: Record<ProjectStatus, string> = {
+  "in-production": "В експлоатация",
   "in-development": "В разработка",
-  published: "Публикуван",
+  "internal-product": "Вътрешен продукт",
+  "public-platform": "Публична платформа",
+  ongoing: "В процес на развитие",
+};
+
+export const projectKindLabel: Record<ProjectKind, string> = {
+  "client-project": "CLIENT PROJECT",
+  "own-product": "OWN PRODUCT",
+  "internal-project": "INTERNAL / SOFIRA PROJECT",
+  "public-platform": "OWN DIGITAL PLATFORM",
 };
 
 export const productCategoryLabel = {
@@ -56,9 +71,11 @@ export const ctaCopy = {
   contact: "Свържете се с нас",
   requestProject: "Заявете проект",
   discussProject: "Обсъдете проект",
+  discussSimilar: "Обсъдете подобен проект",
   learnMore: "Научете повече",
   viewProduct: "Разгледайте продукта",
   viewHrHub: "Разгледайте HR HUB 360",
+  viewProject: "Разгледайте проекта",
   viewProducts: "Разгледайте продуктите",
   viewServices: "Разгледайте услугите",
   inquire: "Заявете информация",

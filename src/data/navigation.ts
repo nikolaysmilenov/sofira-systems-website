@@ -6,6 +6,7 @@ export const routes = {
   products: "/produkti",
   hrHub360: "/produkti/hr-hub-360",
   projects: "/proekti",
+  technology: "/tehnologii",
   about: "/za-nas",
   contact: "/kontakt",
   privacy: "/poveritelnost",
@@ -25,11 +26,16 @@ export function contactPath(topic?: string): string {
   return `${routes.contact}?tema=${encodeURIComponent(topic)}`;
 }
 
+export function projectPath(slug: string): string {
+  return `${routes.projects}/${slug}`;
+}
+
 export const mainNav: NavItem[] = [
   { href: routes.home, label: "Начало" },
   { href: routes.services, label: "Услуги" },
   { href: routes.products, label: "Продукти" },
   { href: routes.projects, label: "Проекти" },
+  { href: routes.technology, label: "Технологии" },
   { href: routes.about, label: "За нас" },
   { href: routes.contact, label: "Контакт" },
 ];

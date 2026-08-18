@@ -7,6 +7,7 @@ import { HowWeWork } from "@/components/sections/how-we-work";
 import { NeedSelector } from "@/components/sections/need-selector";
 import { ProblemToSystem } from "@/components/sections/problem-to-system";
 import { ProductFeature } from "@/components/sections/product-feature";
+import { ProjectsTeaser } from "@/components/sections/projects-teaser";
 import { SystemStack } from "@/components/sections/system-stack";
 import { WhatYouGet } from "@/components/sections/what-you-get";
 import { createPageMetadata } from "@/lib/metadata";
@@ -31,6 +32,7 @@ export default function HomePage() {
       <DualTrack />
       <ProductFeature />
       <WhatYouGet />
+      <ProjectsTeaser />
       <ContactCta />
     </>
   );
