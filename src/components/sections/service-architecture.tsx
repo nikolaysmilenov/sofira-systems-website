@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Section } from "@/components/ui/section";
 import { ctaCopy } from "@/data/labels";
 import { contactPath, routes } from "@/data/navigation";
 import { services } from "@/data/services";

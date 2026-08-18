@@ -30,9 +30,12 @@ NEXT_PUBLIC_SITE_URL=https://sofirasystems.com
 RESEND_API_KEY=
 CONTACT_FROM_EMAIL=
 CONTACT_TO_EMAIL=
+AI_PROVIDER=gemini
+GEMINI_API_KEY=
+GEMINI_MODEL=gemini-2.5-flash
 ```
 
-`RESEND_API_KEY`, `CONTACT_FROM_EMAIL` и `CONTACT_TO_EMAIL` се използват само на сървъра за изпращане на запитвания от контактната форма. Не ги префиксирайте с `NEXT_PUBLIC_`.
+`RESEND_API_KEY`, `CONTACT_FROM_EMAIL`, `CONTACT_TO_EMAIL`, `AI_PROVIDER`, `GEMINI_API_KEY` и `GEMINI_MODEL` се използват само на сървъра. Не ги префиксирайте с `NEXT_PUBLIC_`.
 
 ## Публикуване
 
