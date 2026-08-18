@@ -1,22 +1,34 @@
 import { Section } from "@/components/ui/section";
 import { processSteps } from "@/data/process";
+import type { ProcessStep } from "@/types/content";
 
-export function HowWeWork() {
+type HowWeWorkProps = {
+  eyebrow?: string;
+  title?: string;
+  description?: string;
+  steps?: ProcessStep[];
+};
+
+export function HowWeWork({
+  eyebrow = "APPROACH",
+  title = "Как работим",
+  description = "Инженерна последователност, не агенционен шаблон. Всяка стъпка има конкретна работа.",
+  steps = processSteps,
+}: HowWeWorkProps) {
   return (
-    <Section>
-      <p className="coord">APPROACH</p>
+    <Section id="kak-izgrazhdame">
+      <p className="coord">{eyebrow}</p>
       <h2 className="mt-4 max-w-3xl text-3xl text-foreground sm:text-5xl">
-        Как работим
+        {title}
       </h2>
       <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">
-        Инженерна последователност, не агенционен шаблон. Всяка стъпка има
-        конкретна работа.
+        {description}
       </p>
       <ol className="mt-12 divide-y divide-border border-y border-border">
-        {processSteps.map((step) => (
+        {steps.map((step) => (
           <li
             key={step.index}
-            className="grid gap-3 py-7 transition-colors hover:bg-navy-950/70 sm:grid-cols-[4.5rem_minmax(0,0.8fr)_minmax(0,1.3fr)]"
+            className="grid min-w-0 gap-3 py-7 sm:grid-cols-[4.5rem_minmax(0,0.9fr)_minmax(0,1.2fr)]"
           >
             <span className="font-display text-xl text-electric">{step.index}</span>
             <h3 className="text-xl text-foreground sm:text-2xl">{step.title}</h3>

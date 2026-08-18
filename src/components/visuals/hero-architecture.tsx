@@ -99,7 +99,7 @@ export function HeroArchitecture() {
             className="absolute rounded-md border border-electric/20 bg-white/95 px-2.5 py-1.5 shadow-[0_8px_20px_rgb(15_40_80_/_0.08)]"
             style={{ left: node.x, top: node.y }}
           >
-            <p className="text-[10px] font-semibold tracking-[0.16em] text-ink">
+            <p className="text-[10px] font-semibold tracking-label text-ink">
               {node.label}
             </p>
           </div>
@@ -127,7 +127,7 @@ export function HeroArchitecture() {
               priority
             />
           </div>
-          <p className="mt-3 text-center text-[11px] font-semibold tracking-[0.2em] text-ink">
+          <p className="mt-3 text-center text-[11px] font-semibold tracking-kicker text-ink">
             SOFIRA SYSTEMS
           </p>
         </div>

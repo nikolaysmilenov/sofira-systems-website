@@ -3,7 +3,7 @@ import { Surface } from "@/components/ui/surface";
 export function FutureProductSlot() {
   return (
     <Surface className="flex h-full min-h-[280px] flex-col justify-between border-dashed p-6 sm:p-8">
-      <p className="text-[11px] font-medium uppercase tracking-[0.26em] text-subtle">
+      <p className="text-[11px] font-medium tracking-kicker text-subtle">
         Очаквайте скоро
       </p>
       <div>

@@ -28,7 +28,7 @@ export function ServiceArchitecture() {
             )}
           >
             <div className="mx-auto grid w-full max-w-[1220px] gap-8 px-4 sm:px-6 lg:grid-cols-[7rem_minmax(0,1fr)] lg:gap-12 lg:px-8">
-              <p className="font-display text-3xl tracking-[0.08em] text-electric">
+              <p className="font-display text-3xl text-electric">
                 {String(index + 1).padStart(2, "0")}
               </p>
               <article className="max-w-4xl">
@@ -41,7 +41,7 @@ export function ServiceArchitecture() {
 
                 <dl className="mt-10 grid gap-8 sm:grid-cols-2">
                   <div>
-                    <dt className="text-xs tracking-[0.2em] text-subtle uppercase">
+                    <dt className="text-xs font-medium tracking-kicker text-subtle">
                       Проблем
                     </dt>
                     <dd className="mt-3 text-base leading-relaxed text-muted sm:text-lg">
@@ -49,7 +49,7 @@ export function ServiceArchitecture() {
                     </dd>
                   </div>
                   <div>
-                    <dt className="text-xs tracking-[0.2em] text-subtle uppercase">
+                    <dt className="text-xs font-medium tracking-kicker text-subtle">
                       Какво изграждаме
                     </dt>
                     <dd className="mt-3 text-base leading-relaxed text-muted sm:text-lg">
@@ -59,7 +59,7 @@ export function ServiceArchitecture() {
                 </dl>
 
                 <div className="mt-10">
-                  <p className="text-xs tracking-[0.2em] text-subtle uppercase">
+                  <p className="text-xs font-medium tracking-kicker text-subtle">
                     Типични компоненти
                   </p>
                   <ul className="mt-4 flex flex-wrap gap-2">

@@ -16,7 +16,7 @@ export function ProductCard({ product, className }: ProductCardProps) {
     <Surface hover className={cn("flex h-full flex-col p-6 sm:p-8", className)}>
       <div className="flex flex-wrap items-center gap-3">
         <ProductStatusBadge status={product.status} />
-        <span className="text-[11px] font-medium uppercase tracking-[0.18em] text-subtle">
+        <span className="text-[11px] font-medium tracking-normal text-subtle">
           {productCategoryLabel[product.category]}
         </span>
       </div>

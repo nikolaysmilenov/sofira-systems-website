@@ -1,7 +1,8 @@
 import { CaseStudyArchitecture } from "@/components/projects/case-study-architecture";
+import { ContactCta } from "@/components/sections/contact-cta";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
-import { projectKindLabel, projectStatusLabel } from "@/data/labels";
+import { ctaCopy, projectKindLabel, projectStatusLabel } from "@/data/labels";
 import { routes } from "@/data/navigation";
 import { cn } from "@/lib/cn";
 import type { Project } from "@/types/content";
@@ -18,9 +19,6 @@ const sections = [
 ] as const;
 
 export function CaseStudyView({ project }: CaseStudyViewProps) {
-  const primary = project.ctas[0];
-  const secondary = project.ctas[1];
-
   return (
     <>
       <section className="relative overflow-hidden border-b border-white/10 bg-deep">
@@ -29,10 +27,10 @@ export function CaseStudyView({ project }: CaseStudyViewProps) {
           <p className="coord">
             PROJECT / {project.index}
           </p>
-          <p className="mt-5 font-display text-sm tracking-[0.18em] text-cyan-bright">
+          <p className="mt-5 font-display text-sm tracking-label text-cyan-bright">
             {projectKindLabel[project.kind]}
           </p>
-          <h1 className="mt-4 max-w-4xl text-4xl text-on-deep sm:text-6xl sm:leading-[1.05]">
+          <h1 className="mt-4 max-w-4xl text-4xl text-on-deep sm:text-6xl">
             {project.name}
           </h1>
           <p className="mt-6 max-w-2xl text-base leading-relaxed text-deep-muted sm:text-lg">
@@ -52,7 +50,7 @@ export function CaseStudyView({ project }: CaseStudyViewProps) {
             )}
           >
             <Container className="grid gap-6 py-16 sm:py-20 lg:grid-cols-[7rem_minmax(0,1fr)] lg:gap-12">
-              <p className="font-display text-3xl tracking-[0.08em] text-electric">
+              <p className="font-display text-3xl text-electric">
                 {section.index}
               </p>
               <div className="max-w-3xl">
@@ -64,7 +62,7 @@ export function CaseStudyView({ project }: CaseStudyViewProps) {
                 </p>
                 {section.field === "system" && project.modules ? (
                   <div className="mt-10">
-                    <p className="text-xs tracking-[0.2em] text-subtle uppercase">
+                    <p className="text-xs font-medium tracking-kicker text-subtle">
                       Текущи модули
                     </p>
                     <ul className="mt-4 flex flex-wrap gap-2">
@@ -79,7 +77,7 @@ export function CaseStudyView({ project }: CaseStudyViewProps) {
                     </ul>
                     {project.modules.upcoming && project.modules.upcoming.length > 0 ? (
                       <div className="mt-8">
-                        <p className="text-xs tracking-[0.2em] text-subtle uppercase">
+                        <p className="text-xs font-medium tracking-kicker text-subtle">
                           Предстоящи — още не са готови
                         </p>
                         <ul className="mt-4 flex flex-wrap gap-2">
@@ -105,7 +103,7 @@ export function CaseStudyView({ project }: CaseStudyViewProps) {
       <section className="relative overflow-hidden border-b border-white/10 bg-deep">
         <div className="blueprint-grid-deep pointer-events-none absolute inset-0" />
         <Container className="relative grid gap-6 py-16 sm:py-20 lg:grid-cols-[7rem_minmax(0,1fr)] lg:gap-12">
-          <p className="font-display text-3xl tracking-[0.08em] text-cyan-bright">
+          <p className="font-display text-3xl text-cyan-bright">
             05
           </p>
           <div>
@@ -120,26 +118,20 @@ export function CaseStudyView({ project }: CaseStudyViewProps) {
 
       <section className="border-b border-border bg-navy-950">
         <Container className="grid gap-6 py-16 sm:py-20 lg:grid-cols-[7rem_minmax(0,1fr)] lg:gap-12">
-          <p className="font-display text-3xl tracking-[0.08em] text-electric">
+          <p className="font-display text-3xl text-electric">
             06
           </p>
           <div className="max-w-3xl">
             <h2 className="text-3xl text-foreground sm:text-4xl">
               Статус
             </h2>
-            <p className="mt-3 font-display text-sm tracking-[0.16em] text-electric">
+            <p className="mt-3 text-sm font-medium tracking-normal text-electric">
               {projectStatusLabel[project.status]}
             </p>
             <p className="mt-5 text-base leading-relaxed text-muted sm:text-lg">
               {project.result}
             </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              {primary ? <Button href={primary.href}>{primary.label}</Button> : null}
-              {secondary ? (
-                <Button href={secondary.href} variant="secondary">
-                  {secondary.label}
-                </Button>
-              ) : null}
+            <div className="mt-8">
               <Button href={routes.projects} variant="ghost">
                 Всички проекти
               </Button>
@@ -147,6 +139,19 @@ export function CaseStudyView({ project }: CaseStudyViewProps) {
           </div>
         </Container>
       </section>
+
+      <ContactCta
+        title="Имате подобен процес?"
+        description="Опишете как работите днес. Ще разгледаме как може да бъде превърнат в реална софтуерна система."
+        ctaLabel={ctaCopy.discussSimilar}
+        ctaHref={routes.contact}
+        secondaryLabel={
+          project.slug === "hr-hub-360" ? ctaCopy.viewHrHub : undefined
+        }
+        secondaryHref={
+          project.slug === "hr-hub-360" ? routes.hrHub360 : undefined
+        }
+      />
     </>
   );
 }

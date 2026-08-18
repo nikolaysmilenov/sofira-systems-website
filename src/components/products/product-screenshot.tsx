@@ -29,7 +29,7 @@ export function ProductScreenshot({
           priority={priority}
           className="object-cover object-left-top sm:object-top"
         />
-        <p className="absolute left-3 top-3 z-10 rounded-full bg-white/92 px-2.5 py-1 text-[10px] font-medium tracking-[0.08em] text-[#0c1929] shadow-[0_8px_18px_rgb(12_23_48_/_0.16)] sm:left-4 sm:top-4">
+        <p className="absolute left-3 top-3 z-10 rounded-full bg-white/92 px-2.5 py-1 text-[10px] font-medium tracking-normal text-[#0c1929] shadow-[0_8px_18px_rgb(12_23_48_/_0.16)] sm:left-4 sm:top-4">
           Демонстрационни данни
         </p>
       </div>

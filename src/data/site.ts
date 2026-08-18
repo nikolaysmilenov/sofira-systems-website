@@ -10,9 +10,9 @@ export const site = {
   },
   locale: localeMeta[defaultLocale].openGraph,
   language: defaultLocale,
-  title: "SOFIRA SYSTEMS — Софтуерни системи за бизнеса",
+  title: "SOFIRA SYSTEMS — Софтуерни системи за реалния бизнес",
   description:
-    "SOFIRA SYSTEMS проектира и изгражда софтуер по поръчка, софтуерни системи, автоматизация, AI решения и собствени продукти. Водещ продукт: HR HUB 360.",
+    "SOFIRA SYSTEMS проектира и изгражда софтуер по поръчка, автоматизация, AI решения и собствени дигитални продукти.",
   logo: {
     mark: "/brand/sofira-logo.png",
     wordmark: "/brand/sofira-wordmark.png",

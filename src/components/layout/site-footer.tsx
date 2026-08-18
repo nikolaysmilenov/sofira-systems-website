@@ -29,13 +29,13 @@ export function SiteFooter() {
             }))}
           />
           <div className="lg:col-span-3">
-            <p className="text-sm font-medium text-on-deep">Следваща стъпка</p>
+            <p className="text-sm font-medium tracking-normal text-on-deep">Следваща стъпка</p>
             <p className="mt-4 text-sm leading-relaxed text-deep-muted">
               Разкажете ни какво искате да изградим.
             </p>
             <Link
               href={routes.contact}
-              className="mt-4 inline-flex min-h-11 items-center text-sm font-medium text-cyan-bright hover:text-white"
+              className="mt-4 inline-flex min-h-11 items-center text-sm font-semibold tracking-normal text-cyan-bright hover:text-white"
             >
               Заявете проект
             </Link>
@@ -72,7 +72,7 @@ function FooterColumn({
 }) {
   return (
     <div className="lg:col-span-2">
-      <p className="text-sm font-medium text-on-deep">{title}</p>
+      <p className="text-sm font-medium tracking-normal text-on-deep">{title}</p>
       <ul className="mt-4 space-y-2">
         {links.map((item) => (
           <li key={`${item.href}-${item.label}`}>

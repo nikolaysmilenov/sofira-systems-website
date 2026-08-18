@@ -288,7 +288,7 @@ export function ContactForm({ defaultInquiry = "" }: ContactFormProps) {
 
 function fieldClassName(invalid: boolean): string {
   return cn(
-    "mt-2 w-full rounded-md border bg-navy-950 px-3 py-2.5 text-sm text-foreground transition-colors",
+    "mt-2 w-full rounded-md border bg-navy-950 px-3 py-2.5 text-sm font-normal leading-normal tracking-normal text-foreground transition-colors",
     invalid
       ? "border-red-400/60"
       : "border-border focus:border-electric",

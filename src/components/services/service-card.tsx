@@ -26,7 +26,7 @@ export function ServiceCard({
       <div className="flex items-start justify-between gap-4">
         <ServiceIcon name={service.icon} />
         {typeof index === "number" ? (
-          <span className="font-display text-xs tracking-[0.2em] text-subtle">
+          <span className="font-display text-xs tracking-label text-subtle">
             {String(index).padStart(2, "0")}
           </span>
         ) : null}

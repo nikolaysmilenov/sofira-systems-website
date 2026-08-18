@@ -37,8 +37,8 @@ export function PageHero({
         <h1
           className={
             deep
-              ? "mt-5 max-w-4xl text-4xl text-on-deep sm:text-6xl sm:leading-[1.05]"
-              : "mt-5 max-w-4xl text-4xl text-foreground sm:text-6xl sm:leading-[1.05]"
+              ? "mt-5 max-w-4xl text-4xl text-on-deep sm:text-6xl"
+              : "mt-5 max-w-4xl text-4xl text-foreground sm:text-6xl"
           }
         >
           {title}

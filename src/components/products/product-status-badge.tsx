@@ -14,7 +14,7 @@ export function ProductStatusBadge({
   return (
     <span
       className={cn(
-        "inline-flex w-fit rounded-full border px-2.5 py-1 text-[11px] font-medium uppercase tracking-[0.16em]",
+        "inline-flex w-fit rounded-full border px-2.5 py-1 text-[11px] font-medium tracking-normal",
         status === "available" &&
           "border-cyan/30 bg-cyan/10 text-cyan",
         status === "in-development" &&

@@ -63,17 +63,27 @@ export const technologyCategories: TechnologyCategory[] = [
     coord: "APPLICATION",
     title: "Приложна логика",
     meaning:
-      "Бизнес правила, валидация, автентикация и услуги. Слоят решава какво е позволено — не как изглежда екранът.",
+      "Среда за изпълнение и бизнес правила. Слоят решава какво може да се случи в системата — не как изглежда екранът и не как се приема HTTP заявката.",
+    items: [
+      {
+        name: "Node.js",
+        role: "Среда за изпълнение на публичния сайт и на HR HUB 360 API.",
+        projects: [sofiraSite, hrHub],
+      },
+    ],
+  },
+  {
+    id: "api",
+    index: "03",
+    coord: "API / SERVICES",
+    title: "API и услуги",
+    meaning:
+      "Сървърни маршрути и услуги: запитване, консултант и HR операции. Няма публично документиран външен API за клиенти.",
     items: [
       {
         name: "Next.js Route Handlers",
         role: "Сървърни маршрути за запитване и за цифровия консултант.",
         projects: [sofiraSite],
-      },
-      {
-        name: "Node.js",
-        role: "Среда за изпълнение на публичния сайт и на HR HUB 360 API.",
-        projects: [sofiraSite, hrHub],
       },
       {
         name: "Fastify",
@@ -94,7 +104,7 @@ export const technologyCategories: TechnologyCategory[] = [
   },
   {
     id: "data",
-    index: "03",
+    index: "04",
     coord: "DATA",
     title: "Данни",
     meaning:
@@ -119,7 +129,7 @@ export const technologyCategories: TechnologyCategory[] = [
   },
   {
     id: "automation",
-    index: "04",
+    index: "05",
     coord: "AUTOMATION",
     title: "Автоматизация",
     meaning:
@@ -139,7 +149,7 @@ export const technologyCategories: TechnologyCategory[] = [
   },
   {
     id: "ai",
-    index: "05",
+    index: "06",
     coord: "AI",
     title: "AI интеграция",
     meaning:
@@ -164,7 +174,7 @@ export const technologyCategories: TechnologyCategory[] = [
   },
   {
     id: "infrastructure",
-    index: "06",
+    index: "07",
     coord: "INFRASTRUCTURE",
     title: "Инфраструктура",
     meaning:
@@ -184,7 +194,7 @@ export const technologyCategories: TechnologyCategory[] = [
   },
   {
     id: "desktop",
-    index: "07",
+    index: "08",
     coord: "DESKTOP / SYSTEMS",
     title: "Десктоп системи",
     meaning:
@@ -240,8 +250,8 @@ export const technologyMapLayers: TechnologyMapLayer[] = [
     id: "application",
     label: "APPLICATION",
     meaning:
-      "Бизнес логика, валидация и правила за достъп. Тук се решава какво може да се случи, не само какво се вижда.",
-    technologies: ["Node.js", "Fastify", "Zod", "JWT и контролиран достъп"],
+      "Среда за изпълнение и бизнес правила. Тук се решава какво може да се случи, не само какво се вижда.",
+    technologies: ["Node.js"],
     example: hrHub,
   },
   {
@@ -249,7 +259,12 @@ export const technologyMapLayers: TechnologyMapLayer[] = [
     label: "API / SERVICES",
     meaning:
       "Сървърни маршрути и услуги: запитване, консултант, HR операции. Няма публично документиран външен API за клиенти.",
-    technologies: ["Next.js Route Handlers", "Fastify"],
+    technologies: [
+      "Next.js Route Handlers",
+      "Fastify",
+      "Zod",
+      "JWT и контролиран достъп",
+    ],
     example: sofiraSite,
   },
   {

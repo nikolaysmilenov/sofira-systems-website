@@ -78,8 +78,8 @@ function FlowNode({ label, accent = false }: { label: string; accent?: boolean }
     <div
       className={
         accent
-          ? "rounded-lg border border-cyan-bright/40 bg-white/6 px-4 py-3 text-sm tracking-[0.16em] text-on-deep"
-          : "rounded-lg border border-white/10 px-4 py-3 text-sm tracking-[0.16em] text-deep-muted"
+          ? "rounded-lg border border-cyan-bright/40 bg-white/6 px-4 py-3 text-sm font-medium tracking-label text-on-deep"
+          : "rounded-lg border border-white/10 px-4 py-3 text-sm font-medium tracking-label text-deep-muted"
       }
     >
       {label}

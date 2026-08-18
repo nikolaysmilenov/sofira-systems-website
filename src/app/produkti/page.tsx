@@ -65,13 +65,13 @@ export default function ProductsPage() {
             <div className="grid gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-center">
               <div>
                 <p className="coord">OWN PRODUCT</p>
-                <p className="mt-4 text-sm font-medium uppercase tracking-[0.18em] text-subtle">
+                <p className="mt-4 text-sm font-medium tracking-normal text-subtle">
                   Наш собствен продукт.
                 </p>
                 <div className="mt-4">
                   <ProductStatusBadge status={product.status} />
                 </div>
-                <h2 className="mt-4 text-4xl font-semibold text-foreground sm:text-5xl">
+                <h2 className="mt-4 text-4xl text-foreground sm:text-5xl">
                   {product.name}
                 </h2>
                 <p className="mt-4 text-lg text-muted">{product.tagline}</p>

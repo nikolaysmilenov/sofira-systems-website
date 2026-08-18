@@ -71,7 +71,7 @@ export function TechnologyMap() {
                     : "border-border bg-white text-muted hover:border-electric/40 hover:text-foreground",
                 )}
               >
-                <span className="font-display text-sm tracking-[0.16em]">
+                <span className="font-display text-sm tracking-label">
                   {layer.label}
                 </span>
                 <span className="text-xs text-subtle" aria-hidden="true">
@@ -80,7 +80,7 @@ export function TechnologyMap() {
               </button>
               {index < technologyMapLayers.length - 1 ? (
                 <div className="flex justify-center py-1" aria-hidden="true">
-                  <span className="flex flex-col items-center text-xs tracking-[0.2em] text-electric/70">
+                  <span className="flex flex-col items-center text-xs tracking-normal text-electric/70">
                     <span className="h-3 w-px bg-current" />
                     <span>↓</span>
                   </span>
@@ -106,7 +106,7 @@ export function TechnologyMap() {
         </p>
         {selected.technologies.length > 0 ? (
           <div className="mt-8">
-            <p className="text-xs tracking-[0.2em] text-subtle uppercase">
+            <p className="text-xs font-medium tracking-kicker text-subtle">
               Проверени технологии
             </p>
             <ul className="mt-4 flex flex-wrap gap-2">
@@ -125,7 +125,7 @@ export function TechnologyMap() {
             Този слой не е технология — това е човекът, за когото се изгражда системата.
           </p>
         )}
-        <p className="mt-8 text-xs tracking-[0.2em] text-subtle uppercase">
+        <p className="mt-8 text-xs font-medium tracking-kicker text-subtle">
           Пример
         </p>
         <Link

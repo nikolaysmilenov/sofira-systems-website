@@ -42,7 +42,7 @@ export function TechnologyView() {
             )}
           >
             <Container className="grid gap-6 py-16 sm:py-20 lg:grid-cols-[7rem_minmax(0,1fr)] lg:gap-12">
-              <p className="font-display text-3xl tracking-[0.08em] text-electric">
+              <p className="font-display text-3xl text-electric">
                 {category.index}
               </p>
               <div className="max-w-3xl">
@@ -56,7 +56,7 @@ export function TechnologyView() {
                 <ul className="mt-10 space-y-8">
                   {category.items.map((item) => (
                     <li key={item.name}>
-                      <h3 className="font-display text-sm tracking-[0.16em] text-electric">
+                      <h3 className="font-display text-sm tracking-label text-electric">
                         {item.name}
                       </h3>
                       <p className="mt-2 text-base leading-relaxed text-muted">
@@ -87,7 +87,7 @@ export function TechnologyView() {
                 key={item.index}
                 className="grid gap-3 lg:grid-cols-[5rem_minmax(0,1fr)] lg:gap-10"
               >
-                <p className="font-display text-2xl tracking-[0.08em] text-cyan-bright">
+                <p className="font-display text-2xl text-cyan-bright">
                   {item.index}
                 </p>
                 <div>

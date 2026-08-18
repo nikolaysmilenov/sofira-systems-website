@@ -9,6 +9,8 @@ import { GRACEFUL_FALLBACK, CTA_LINKS, type ConsultantCta } from "@/lib/ai/reply
 import { INTERNAL_LEAK_PATTERN } from "@/lib/ai/conversation";
 import { cn } from "@/lib/cn";
 
+export const SOFIRA_AI_OPEN_EVENT = "sofira-ai:open";
+
 const WELCOME =
   "Здравейте. Аз съм SOFIRA AI.\n\nМога да ви помогна да разберете какво можем да изградим за вашия бизнес, да ви насоча към подходяща услуга или да ви помогна да формулирате проект.";
 
@@ -38,6 +40,17 @@ export function SofiraAi() {
   const closePanel = useCallback(() => {
     setOpen(false);
     triggerRef.current?.focus();
+  }, []);
+
+  useEffect(() => {
+    function onOpenEvent() {
+      setOpen(true);
+    }
+
+    window.addEventListener(SOFIRA_AI_OPEN_EVENT, onOpenEvent);
+    return () => {
+      window.removeEventListener(SOFIRA_AI_OPEN_EVENT, onOpenEvent);
+    };
   }, []);
 
   useEffect(() => {
@@ -131,11 +144,11 @@ export function SofiraAi() {
           open && "hidden",
         )}
       >
-        <span className="flex h-8 w-8 items-center justify-center rounded-sm border border-cyan-bright/40 bg-white/6 font-display text-[11px] tracking-[0.16em] text-cyan-bright">
+        <span className="flex h-8 w-8 items-center justify-center rounded-sm border border-cyan-bright/40 bg-white/6 font-display text-[11px] tracking-label text-cyan-bright">
           AI
         </span>
         <span>
-          <span className="block text-sm font-medium">SOFIRA AI</span>
+          <span className="block text-sm font-medium tracking-normal">SOFIRA AI</span>
           <span className="block text-[11px] text-deep-muted">Вашият дигитален консултант</span>
         </span>
       </button>
@@ -154,7 +167,7 @@ export function SofiraAi() {
             <div className="relative flex items-start justify-between gap-3">
               <div>
                 <p className="coord">CONSULTANT</p>
-                <h2 id={titleId} className="mt-2 text-lg text-on-deep">
+                <h2 id={titleId} className="mt-2 text-lg font-medium tracking-normal text-on-deep">
                   SOFIRA AI
                 </h2>
                 <p className="mt-1 text-xs text-deep-muted">Вашият дигитален консултант</p>
@@ -183,7 +196,7 @@ export function SofiraAi() {
                     key={action.label}
                     type="button"
                     onClick={() => void send(action.prompt)}
-                    className="rounded-full border border-border bg-white px-3 py-2 text-left text-xs text-foreground hover:border-electric/40"
+                    className="rounded-full border border-border bg-white px-3 py-2 text-left text-xs font-medium tracking-normal text-foreground hover:border-electric/40"
                   >
                     {action.label}
                   </button>
@@ -218,7 +231,7 @@ export function SofiraAi() {
               </div>
             ))}
             {pending ? (
-              <p className="text-xs tracking-[0.18em] text-subtle uppercase" role="status">
+              <p className="text-xs font-medium tracking-normal text-subtle" role="status">
                 SOFIRA AI мисли…
               </p>
             ) : null}
@@ -254,12 +267,12 @@ export function SofiraAi() {
                   }
                 }}
                 placeholder="Опишете задачата накратко…"
-                className="w-full resize-none rounded-md border border-border bg-navy-950 px-3 py-2 text-sm text-foreground"
+                className="w-full resize-none rounded-md border border-border bg-navy-950 px-3 py-2 text-sm font-normal leading-relaxed tracking-normal text-foreground"
               />
               <button
                 type="submit"
                 disabled={pending || !draft.trim()}
-                className="inline-flex min-h-11 shrink-0 items-center rounded-md bg-electric px-4 text-sm font-medium text-white disabled:opacity-60"
+                className="inline-flex min-h-11 shrink-0 items-center rounded-md bg-electric px-4 text-sm font-semibold tracking-normal text-white disabled:opacity-60"
               >
                 Изпрати
               </button>

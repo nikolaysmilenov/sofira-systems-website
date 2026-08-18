@@ -3,38 +3,36 @@ import { Container } from "@/components/ui/container";
 import { HeroArchitecture } from "@/components/visuals/hero-architecture";
 import { ctaCopy } from "@/data/labels";
 import { routes } from "@/data/navigation";
-import { site } from "@/data/site";
 
 export function HomeHero() {
   return (
-    <section className="relative overflow-hidden border-b border-border bg-white">
-      <div className="hero-glow pointer-events-none absolute inset-0" />
-      <div className="blueprint-grid pointer-events-none absolute inset-0 opacity-40 [mask-image:radial-gradient(ellipse_70%_80%_at_80%_40%,black,transparent)]" />
-      <Container className="relative grid items-center gap-12 py-14 sm:py-16 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-10 lg:py-24">
-        <div className="reveal max-w-2xl">
-          <p className="coord">SOFIRA SYSTEMS</p>
-          <h1 className="mt-5 text-[2.35rem] leading-[1.05] text-foreground sm:text-5xl lg:text-[4.15rem]">
-            Софтуерни системи
-            <span className="block text-ink">за реалния бизнес.</span>
+    <section className="deep-section relative overflow-hidden border-b border-white/10">
+      <div className="blueprint-grid-deep pointer-events-none absolute inset-0" />
+      <Container className="relative grid items-center gap-12 py-16 sm:py-20 lg:grid-cols-[minmax(0,1.08fr)_minmax(0,0.92fr)] lg:gap-10 lg:py-24">
+        <div className="reveal min-w-0 max-w-2xl">
+          <p className="coord">SYS / 01 · BUILD</p>
+          <h1 className="mt-5 text-[2.15rem] text-on-deep sm:text-5xl lg:text-[4.15rem]">
+            Изграждаме софтуерни системи
+            <span className="block">за реалния бизнес.</span>
           </h1>
-          <p className="mt-6 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
-            Създаваме софтуер по поръчка, дигитални платформи, автоматизация, AI
-            решения и собствени технологични продукти.
+          <p className="mt-6 max-w-xl text-base leading-relaxed text-deep-muted sm:text-lg">
+            SOFIRA SYSTEMS проектира и изгражда софтуер по поръчка, автоматизация,
+            AI решения и собствени дигитални продукти.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
             <Button href={routes.contact} className="w-full sm:w-auto">
               {ctaCopy.requestProject}
             </Button>
             <Button
-              href={routes.products}
-              variant="secondary"
+              href={routes.projects}
+              variant="inverse"
               className="w-full sm:w-auto"
             >
-              {ctaCopy.viewProducts}
+              {ctaCopy.viewProjects}
             </Button>
           </div>
-          <p className="mt-8 max-w-md text-xs tracking-[0.18em] text-subtle uppercase">
-            {site.name} · системи · продукти · инженеринг
+          <p className="mt-8 text-xs font-medium tracking-label text-deep-muted">
+            PROCESS → ARCHITECTURE → SYSTEM
           </p>
         </div>
         <div className="reveal">

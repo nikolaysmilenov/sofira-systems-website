@@ -61,12 +61,12 @@ function ProjectIndexRow({ project }: { project: Project }) {
       )}
     >
       <Container className="grid gap-6 py-16 sm:py-20 lg:grid-cols-[7rem_minmax(0,1fr)_auto] lg:items-end lg:gap-12">
-        <p className="font-display text-3xl tracking-[0.08em] text-electric">
+        <p className="font-display text-3xl text-electric">
           {project.index}
         </p>
         <div className="max-w-3xl">
           <p className="coord">PROJECT / {project.index}</p>
-          <p className="mt-4 font-display text-sm tracking-[0.16em] text-electric">
+          <p className="mt-4 font-display text-sm tracking-label text-electric">
             {projectKindLabel[project.kind]}
           </p>
           <h3 className="mt-3 text-3xl text-foreground sm:text-5xl">
@@ -75,7 +75,7 @@ function ProjectIndexRow({ project }: { project: Project }) {
           <p className="mt-4 text-base leading-relaxed text-muted sm:text-lg">
             {project.summary}
           </p>
-          <p className="mt-4 text-xs tracking-[0.2em] text-subtle uppercase">
+          <p className="mt-4 text-xs font-medium tracking-normal text-subtle">
             {projectStatusLabel[project.status]}
           </p>
         </div>

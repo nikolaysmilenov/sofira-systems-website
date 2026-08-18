@@ -33,9 +33,9 @@ export function NavLinks({
               aria-current={current ? "page" : undefined}
               onClick={onNavigate}
               className={cn(
-                "inline-flex min-h-11 items-center rounded-md px-2.5 text-sm transition-colors xl:px-3",
+                "inline-flex min-h-11 items-center rounded-md px-2.5 text-sm font-medium tracking-normal transition-colors xl:px-3",
                 current
-                  ? "bg-electric/8 font-medium text-foreground"
+                  ? "bg-electric/8 text-foreground"
                   : "text-muted hover:bg-navy-800 hover:text-foreground",
                 linkClassName,
               )}

@@ -9,12 +9,16 @@ const inter = Inter({
   subsets: ["latin", "cyrillic"],
   variable: "--font-inter",
   display: "swap",
+  preload: true,
+  adjustFontFallback: true,
 });
 
 const manrope = Manrope({
   subsets: ["latin", "cyrillic"],
   variable: "--font-manrope",
   display: "swap",
+  preload: true,
+  adjustFontFallback: true,
 });
 
 export const metadata: Metadata = {
@@ -71,7 +75,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang={site.language} className={`${inter.variable} ${manrope.variable}`}>
-      <body className="font-sans antialiased">
+      <body className={`${inter.className} antialiased`}>
         <SiteShell>{children}</SiteShell>
       </body>
     </html>

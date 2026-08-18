@@ -1,39 +1,42 @@
 import type { Metadata } from "next";
-import { BeyondWebsites } from "@/components/sections/beyond-websites";
 import { ContactCta } from "@/components/sections/contact-cta";
-import { DualTrack } from "@/components/sections/dual-track";
 import { HomeHero } from "@/components/sections/home-hero";
 import { HowWeWork } from "@/components/sections/how-we-work";
-import { NeedSelector } from "@/components/sections/need-selector";
-import { ProblemToSystem } from "@/components/sections/problem-to-system";
-import { ProductFeature } from "@/components/sections/product-feature";
+import { OwnProducts } from "@/components/sections/own-products";
 import { ProjectsTeaser } from "@/components/sections/projects-teaser";
-import { SystemStack } from "@/components/sections/system-stack";
-import { WhatYouGet } from "@/components/sections/what-you-get";
+import { SofiraAiTeaser } from "@/components/sections/sofira-ai-teaser";
+import { TechnologyPreview } from "@/components/sections/technology-preview";
+import { WhatWeBuild } from "@/components/sections/what-we-build";
+import { howWeBuildSteps } from "@/data/process";
 import { createPageMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "Софтуерни системи за бизнеса",
+  title: "Софтуерни системи за реалния бизнес",
   description:
-    "SOFIRA SYSTEMS проектира и изгражда софтуер по поръчка, дигитални платформи, автоматизация и AI решения. Собствен продукт: HR HUB 360.",
+    "SOFIRA SYSTEMS проектира и изгражда софтуер по поръчка, автоматизация, AI решения и собствени дигитални продукти. Собствени продукти в разработка: HR HUB 360 и STINGER.",
   path: "/",
-  ogTitle: "SOFIRA SYSTEMS — софтуерни системи за бизнеса",
+  ogTitle: "SOFIRA SYSTEMS — софтуерни системи за реалния бизнес",
 });
 
 export default function HomePage() {
   return (
     <>
       <HomeHero />
-      <NeedSelector />
-      <ProblemToSystem />
-      <BeyondWebsites />
-      <SystemStack />
-      <HowWeWork />
-      <DualTrack />
-      <ProductFeature />
-      <WhatYouGet />
+      <WhatWeBuild />
+      <OwnProducts />
+      <HowWeWork
+        eyebrow="HOW WE BUILD"
+        title="Как изграждаме."
+        description="Не започваме от шаблон. Започваме от бизнес процеса — стъпки, роли и данни — и стигаме до работеща система."
+        steps={howWeBuildSteps}
+      />
       <ProjectsTeaser />
-      <ContactCta />
+      <TechnologyPreview />
+      <SofiraAiTeaser />
+      <ContactCta
+        title="Имате процес, който трябва да стане система?"
+        description="Опишете как работите днес. Ще уточним какво има смисъл да бъде изградено."
+      />
     </>
   );
 }

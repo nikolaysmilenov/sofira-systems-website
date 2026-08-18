@@ -26,7 +26,7 @@ export function CaseStudyArchitecture({
           >
             <p
               className={cn(
-                "font-display text-sm tracking-[0.16em]",
+                "font-display text-sm tracking-label",
                 deep ? "text-cyan-bright" : "text-electric",
               )}
             >
@@ -45,7 +45,7 @@ export function CaseStudyArchitecture({
             <div className="flex justify-center py-2" aria-hidden="true">
               <span
                 className={cn(
-                  "flex flex-col items-center text-xs tracking-[0.2em]",
+                  "flex flex-col items-center text-xs tracking-normal",
                   deep ? "text-cyan-bright/70" : "text-electric/70",
                 )}
               >
