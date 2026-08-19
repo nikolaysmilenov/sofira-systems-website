@@ -8,6 +8,10 @@ export const COMPACT_CONTINUE =
 
 export const INCOMPLETE_FALLBACK = GRACEFUL_FALLBACK;
 
+export function isGenericFallbackReply(text: string): boolean {
+  return /в момента не мога да дам надежден отговор/i.test(text);
+}
+
 export const CTA_LINKS: Record<ConsultantCta, { href: string; label: string }> = {
   contact: { href: "/kontakt", label: "Заявете проект" },
   "hr-hub": { href: "/kontakt?tema=hr-hub-360", label: "Заявете проект" },

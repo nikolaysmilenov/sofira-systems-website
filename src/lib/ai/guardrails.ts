@@ -25,13 +25,13 @@ const CRM_PROCESS_PATTERN =
 const HR_UPCOMING_PATTERN = /отчет|отчети|работн(?:и|ите)? процес|reports?/i;
 const HR_HUB_PATTERN = /hr\s*hub/i;
 const EXCEL_PATTERN = /excel/i;
-const AI_INVOICE_PATTERN = /фактур|invoice/i;
+const AI_INVOICE_PATTERN = /фактур|invoice|faktur/i;
 const WHY_SOFIRA_PATTERN =
   /защо да (избера|изберем) sofira|вместо друга|why (should i |would i )?(choose|pick) sofira/i;
 const CUSTOM_INTERNAL_PATTERN =
   /вътрешн[\s\S]{0,24}систем|систем[\s\S]{0,48}(задач|документ|клиент)|задач[\s\S]{0,40}документ[\s\S]{0,40}клиент/i;
 const START_PROJECT_PATTERN =
-  /как да започнем|имам конкретен проект|искам да започнем|искам да заявя проект/i;
+  /как да започнем|имам конкретен проект|искам да започнем|искам да заявя проект|искам оферта|искам да ми го направите/i;
 const SERVICES_PATTERN =
   /какви услуги|какво предлагате|какво изграждате|какво правите като услуги|какво може да изгради/i;
 const UNCERTAIN_NEED_PATTERN =
@@ -418,7 +418,7 @@ export function resolveConsultantGuard(
   }
 
   if (START_PROJECT_PATTERN.test(last)) {
-    return { action: "block", reply: CONSULTANT_REPLIES.startProject };
+    return { action: "block", reply: CONSULTANT_REPLIES.highIntent, cta: "contact" };
   }
 
   return { action: "proceed" };

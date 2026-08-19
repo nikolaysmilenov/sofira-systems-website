@@ -18,11 +18,11 @@ const checks: Array<{ intent: ConsultantIntent; pattern: RegExp }> = [
   { intent: "CONTACT", pattern: /заяв(ете|я)|контакт|запитване|обадете/i },
   {
     intent: "AI_SOLUTION",
-    pattern: /\bai\b|изкуствен интелект|интелигентн|обработва фактур|invoice/i,
+    pattern: /\bai\b|изкуствен интелект|интелигентн|обработва фактур|invoice|faktur/i,
   },
   {
     intent: "AUTOMATION",
-    pattern: /автомат|excel|ръчн|грешк|повтаря/i,
+    pattern: /автомат|excel|eksel|ръчн|грешк|повтаря|avtomatiz/i,
   },
   { intent: "WEB_APPLICATION", pattern: /уеб|сайт|лендинг|страница/i },
   { intent: "DIGITAL_PLATFORM", pattern: /платформ|портал/i },
@@ -30,9 +30,9 @@ const checks: Array<{ intent: ConsultantIntent; pattern: RegExp }> = [
   { intent: "GENERAL_COMPANY", pattern: /какво правите|кои сте|за компания|sofira/i },
   {
     intent: "CUSTOM_SOFTWARE",
-    pattern: /crm|склад|систем|софтуер по поръчка|изградете|направите|оферт|продажб/i,
+    pattern: /crm|склад|систем|софтуер по поръчка|изградете|направите|оферт|продажб|programa|prilojeni/i,
   },
-  { intent: "PROJECT_DISCOVERY", pattern: /имам идея|искам система|проект|нуждая се/i },
+  { intent: "PROJECT_DISCOVERY", pattern: /имам идея|искам система|проект|нуждая се|softuer|proekt/i },
 ];
 
 export function classifyIntent(text: string): ConsultantIntent {

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { AI_LIMITS, parseAiChatPayload, toModelInput } from "@/lib/ai/chat";
 import { compactConversation } from "@/lib/ai/conversation";
+import { isVehicleDiscovery, resolveSemanticDiscovery } from "@/lib/ai/discovery";
 import { isPromptInjection, isSecretProbe, resolveConsultantGuard, CONSULTANT_REPLIES } from "@/lib/ai/guardrails";
 import { buildInternalTurnHint, classifyIntent } from "@/lib/ai/intent";
 import { classifyLeadStage, userConversationText } from "@/lib/ai/qualification";
@@ -8,7 +9,7 @@ import {
   getAiProvider,
   type AiProvider,
 } from "@/lib/ai/provider";
-import { COMPACT_CONTINUE, GRACEFUL_FALLBACK, isIncompleteReply, sanitizeConsultantReply, type ConsultantCta } from "@/lib/ai/reply";
+import { COMPACT_CONTINUE, GRACEFUL_FALLBACK, isGenericFallbackReply, isIncompleteReply, sanitizeConsultantReply, type ConsultantCta } from "@/lib/ai/reply";
 import { buildSofiraAiInstructions } from "@/lib/ai/system-prompt";
 import { rateLimit } from "@/lib/rate-limit";
 
@@ -32,6 +33,7 @@ export async function handleAiChatPost(
   provider: AiProvider = getAiProvider(),
 ) {
   let compacted = false;
+  let fallbackMessages: Parameters<typeof resolveSemanticDiscovery>[0] = [];
   try {
     const clientKey = `ai:${getClientKey(request)}`;
     const limit = rateLimit(clientKey, AI_LIMITS.rateLimit, AI_LIMITS.rateWindowMs);
@@ -108,6 +110,7 @@ export async function handleAiChatPost(
     const originalCount = parsed.messages.length;
     const messages = compactConversation(parsed.messages);
     compacted = originalCount > messages.length;
+    fallbackMessages = messages;
 
     const lastUser = messages[messages.length - 1]?.content ?? "";
     const guard = resolveConsultantGuard(lastUser, messages);
@@ -115,8 +118,12 @@ export async function handleAiChatPost(
       return json(okReply(guard.reply, guard.cta), 200);
     }
 
+    if (isVehicleDiscovery(messages)) {
+      return json(okLocalReply(messages, compacted), 200);
+    }
+
     if (!provider.isConfigured()) {
-      return json(okReply(compacted ? COMPACT_CONTINUE : GRACEFUL_FALLBACK), 200);
+      return json(okLocalReply(messages, compacted), 200);
     }
 
     const intent = classifyIntent(userConversationText(messages) || lastUser);
@@ -132,14 +139,30 @@ export async function handleAiChatPost(
     });
 
     const sanitized = sanitizeConsultantReply(result.text);
-    if (!sanitized.reply || isIncompleteReply(sanitized.reply, result.finishReason)) {
-      return json(okReply(compacted ? COMPACT_CONTINUE : GRACEFUL_FALLBACK), 200);
+    if (
+      !sanitized.reply ||
+      isIncompleteReply(sanitized.reply, result.finishReason) ||
+      isGenericFallbackReply(sanitized.reply)
+    ) {
+      return json(okLocalReply(messages, compacted), 200);
     }
 
     return json(okReply(sanitized.reply, sanitized.cta), 200);
   } catch {
-    return json(okReply(compacted ? COMPACT_CONTINUE : GRACEFUL_FALLBACK), 200);
+    return json(okLocalReply(fallbackMessages, compacted), 200);
   }
+}
+
+function okLocalReply(
+  messages: Parameters<typeof resolveSemanticDiscovery>[0],
+  compacted: boolean,
+) {
+  if (compacted) {
+    return okReply(COMPACT_CONTINUE);
+  }
+
+  const discovery = resolveSemanticDiscovery(messages);
+  return okReply(discovery.reply, discovery.cta);
 }
 
 function getClientKey(request: Request): string {

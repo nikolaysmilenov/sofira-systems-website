@@ -65,6 +65,14 @@ export function classifyLeadStage(messages: AiChatMessage[]): LeadStage {
 }
 
 export function isMostlyEnglish(text: string): boolean {
+  if (
+    /\b(iskam|imam|firma|firmata|vsichko|softuer|proekt|programa|prilojenie|avtomatizaciq|fakturi|koli|avtopark|za|kakvo|kakvi)\b/i.test(
+      text,
+    )
+  ) {
+    return false;
+  }
+
   const letters = text.replace(/[^A-Za-zА-Яа-яЁё]/g, "");
   if (!letters) {
     return false;

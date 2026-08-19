@@ -7,8 +7,8 @@ import { handleAiChatPost } from "@/lib/ai/chat-handler";
 import { compactConversation, INTERNAL_LEAK_PATTERN } from "@/lib/ai/conversation";
 import { CONSULTANT_REPLIES, resolveConsultantGuard } from "@/lib/ai/guardrails";
 import { classifyIntent } from "@/lib/ai/intent";
-import { classifyLeadStage } from "@/lib/ai/qualification";
-import { COMPACT_CONTINUE, GRACEFUL_FALLBACK } from "@/lib/ai/reply";
+import { classifyLeadStage, isMostlyEnglish } from "@/lib/ai/qualification";
+import { COMPACT_CONTINUE } from "@/lib/ai/reply";
 import {
   CUSTOM_EVALUATION,
   UNKNOWN_FACT,
@@ -107,6 +107,8 @@ test("classifies automation and Excel discovery", () => {
     "AUTOMATION",
   );
   assert.equal(inferInquiryTopic("Искам да автоматизирам процес"), "automation");
+  assert.equal(isMostlyEnglish("iskam ai za fakturi"), false);
+  assert.equal(isMostlyEnglish("I need invoice automation"), true);
 });
 
 test("classifies custom software, AI, web, and contact", () => {
@@ -400,14 +402,15 @@ test("system instructions lock identity and hallucination policy", () => {
   assert.doesNotMatch(instructions, /OPENAI_API_KEY|GEMINI_API_KEY/);
 });
 
-test("missing Gemini key returns a graceful consultant fallback", async () => {
+test("missing Gemini key keeps a useful local discovery conversation", async () => {
   const result = await postChatWithProvider(
     [{ role: "user", content: "Какво представлява SOFIRA SYSTEMS?" }],
     mockProvider(async () => ({ text: "should not run" }), false),
   );
   assert.equal(result.status, 200);
   assert.equal(result.body.status, "ok");
-  assert.equal(result.body.reply, GRACEFUL_FALLBACK);
+  assert.match(String(result.body.reply), /SOFIRA SYSTEMS проектира и изгражда/);
+  assert.doesNotMatch(String(result.body.reply), /В момента не мога да дам надежден отговор/i);
   assertNoInternalLeak(result.body);
   assert.doesNotMatch(JSON.stringify(result.body), /GEMINI_API_KEY|apiKey|AIza/i);
 
@@ -962,6 +965,132 @@ test("v1.3.2 internal fallbacks are never exposed on normal visitor questions", 
     },
   );
   assert.equal(providerError.status, 200);
-  assert.equal(providerError.body.reply, GRACEFUL_FALLBACK);
+  assert.match(String(providerError.body.reply), /SOFIRA SYSTEMS проектира и изгражда/);
+  assert.doesNotMatch(String(providerError.body.reply), /В момента не мога да дам надежден отговор/i);
   assertNoInternalLeak(providerError.body);
+});
+
+test("v2 semantic discovery stays useful when the provider is unavailable", async () => {
+  const offline = mockProvider(async () => ({ text: "should not run" }), false);
+  const cases = [
+    {
+      content: "Искам програма която да прави профилактика на колата ми",
+      expected: /custom software проект за управление на автомобили или автопарк/i,
+    },
+    {
+      content: "искам софтуерен проект",
+      expected: /софтуерен проект по поръчка/i,
+    },
+    {
+      content: "автоматизация искам",
+      expected: /Кое действие искате да се случва автоматично/i,
+    },
+    {
+      content: "imam firma vsichko e excel",
+      expected: /автоматизация или вътрешна бизнес система/i,
+    },
+    {
+      content: "iskam ai za fakturi",
+      expected: /AI \+ автоматизация решение по поръчка/i,
+    },
+    {
+      content: "Искам приложение за фирмен автопарк от 20 коли",
+      expected: /фирмен автопарк от 20 автомобила/i,
+    },
+  ];
+
+  for (const item of cases) {
+    const result = await postChatWithProvider(
+      [{ role: "user", content: item.content }],
+      offline,
+    );
+    assert.equal(result.status, 200);
+    assert.match(String(result.body.reply), item.expected);
+    assert.doesNotMatch(String(result.body.reply), /В момента не мога да дам надежден отговор/i);
+    assertNoInternalLeak(result.body);
+  }
+});
+
+test("v2 fleet discovery preserves context across short follow-ups", async () => {
+  const offline = mockProvider(async () => ({ text: "should not run" }), false);
+  const turn1 = [{ role: "user" as const, content: "искам програма за коли" }];
+  const first = await postChatWithProvider(turn1, offline);
+  assert.match(String(first.body.reply), /личен автомобил или за фирмен автопарк/i);
+
+  const turn2 = [
+    ...turn1,
+    { role: "assistant" as const, content: String(first.body.reply) },
+    { role: "user" as const, content: "за фирма" },
+  ];
+  const second = await postChatWithProvider(turn2, offline);
+  assert.match(String(second.body.reply), /За колко автомобила става дума/i);
+  assert.doesNotMatch(String(second.body.reply), /личен автомобил или за фирмен автопарк/i);
+
+  const turn3 = [
+    ...turn2,
+    { role: "assistant" as const, content: String(second.body.reply) },
+    { role: "user" as const, content: "20 коли" },
+  ];
+  const third = await postChatWithProvider(turn3, offline);
+  assert.match(String(third.body.reply), /20 автомобила/i);
+  assert.match(String(third.body.reply), /Какво искате да следите първо/i);
+
+  const turn4 = [
+    ...turn3,
+    { role: "assistant" as const, content: String(third.body.reply) },
+    { role: "user" as const, content: "искам да следи сервизи и километри" },
+  ];
+  const fourth = await postChatWithProvider(turn4, offline);
+  assert.match(String(fourth.body.reply), /история на ремонти, напомняния и роли/i);
+  assert.match(String(fourth.body.reply), /20 автомобила/i);
+  assertNoInternalLeak(fourth.body);
+});
+
+test("v2 vehicle discovery uses verified custom-project wording before the provider", async () => {
+  let providerCalled = false;
+  const result = await postChatWithProvider(
+    [{ role: "user", content: "Искам програма която да прави профилактика на колата ми" }],
+    mockProvider(async () => {
+      providerCalled = true;
+      return { text: "should not run" };
+    }),
+  );
+
+  assert.equal(providerCalled, false);
+  assert.match(String(result.body.reply), /custom software проект/i);
+  assert.match(String(result.body.reply), /може да включва/i);
+  assert.doesNotMatch(String(result.body.reply), /готов(?:а|о|и)? (?:мобил|продукт|приложени)/i);
+  assert.doesNotMatch(String(result.body.reply), /не предлага|няма готов/i);
+});
+
+test("v2 high-intent project request receives the controlled contact CTA", async () => {
+  const result = await postChatWithProvider(
+    [{ role: "user", content: "Имам конкретен проект и искам да започнем." }],
+    mockProvider(async () => ({ text: "should not run" }), false),
+  );
+  assert.equal(result.status, 200);
+  assert.equal(result.body.cta, "contact");
+  assert.match(String(result.body.reply), /достатъчно конкретно/i);
+  assertNoInternalLeak(result.body);
+});
+
+test("v2 keeps verified HR facts and discovery available without Gemini", async () => {
+  const offline = mockProvider(async () => ({ text: "should not run" }), false);
+  const hr = await postChatWithProvider(
+    [{ role: "user", content: "Какви модули има HR HUB 360?" }],
+    offline,
+  );
+  assert.equal(hr.status, 200);
+  assert.match(String(hr.body.reply), /Табло/);
+  assert.match(String(hr.body.reply), /Отчети — Скоро/);
+
+  const modelFallback = await postChatWithProvider(
+    [{ role: "user", content: "Искам програма за профилактика на колата ми" }],
+    mockProvider(async () => ({
+      text: "В момента не мога да дам надежден отговор на този въпрос.",
+    })),
+  );
+  assert.match(String(modelFallback.body.reply), /сервизни интервали/i);
+  assert.doesNotMatch(String(modelFallback.body.reply), /В момента не мога да дам надежден отговор/i);
+  assertNoInternalLeak(modelFallback.body);
 });
