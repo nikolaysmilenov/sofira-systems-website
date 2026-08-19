@@ -1,18 +1,24 @@
 import { ContactCta } from "@/components/sections/contact-cta";
 import { ProductStatusBadge } from "@/components/products/product-status-badge";
-import { ProductScreenshot } from "@/components/products/product-screenshot";
-import { HrHubShowcase } from "@/components/products/hr-hub-showcase";
+import { HrHubProof } from "@/components/products/hr-hub-proof";
+import { CaseStudyArchitecture } from "@/components/projects/case-study-architecture";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
-import { hrHubDashboard, hrHubFeaturedScreens } from "@/data/hr-hub-screens";
+import { hrHubVerifiedModules } from "@/data/hr-hub-screens";
+import { capabilityStateLabel, ctaCopy, projectKindLabel } from "@/data/labels";
+import { projectPath, routes } from "@/data/navigation";
 import { getProductInquireHref } from "@/data/products";
-import { capabilityStateLabel, ctaCopy } from "@/data/labels";
-import { routes } from "@/data/navigation";
+import { getProjectBySlug } from "@/data/projects";
 import type { Product } from "@/types/content";
 
 type ProductPageViewProps = {
   product: Product;
 };
+
+const upcomingModules = [
+  { title: "Работни процеси", note: "Скоро" },
+  { title: "Отчети", note: "Скоро" },
+] as const;
 
 export function ProductPageView({ product }: ProductPageViewProps) {
   const inquireHref = getProductInquireHref(product);
@@ -23,44 +29,35 @@ export function ProductPageView({ product }: ProductPageViewProps) {
     (item) => item.state === "upcoming",
   );
   const isHrHub = product.slug === "hr-hub-360";
-  const extraScreens = hrHubFeaturedScreens.filter((item) => item.id !== "tablo");
+  const hrHubProject = isHrHub ? getProjectBySlug("hr-hub-360") : undefined;
 
   return (
     <>
       <section className="relative overflow-hidden border-b border-white/10 bg-deep">
         <div className="blueprint-grid-deep pointer-events-none absolute inset-0" />
-        <Container className="relative grid gap-10 py-16 sm:py-20 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:items-center lg:py-24">
-          <div>
-            <p className="coord">PRODUCT LAUNCH</p>
-            <div className="mt-5">
-              <ProductStatusBadge status={product.status} />
-            </div>
-            <h1 className="mt-5 text-4xl text-on-deep sm:text-6xl">
-              {product.name}
-            </h1>
-            <p className="mt-4 text-lg text-deep-muted">
-              Централизирана система за управление на човешките ресурси и бизнес
-              процесите.
-            </p>
-            <p className="mt-5 max-w-xl text-base leading-relaxed text-deep-muted">
-              {product.description}
-            </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Button href={inquireHref}>{ctaCopy.inquire}</Button>
-              <Button href={routes.products} variant="inverse">
-                {ctaCopy.allProducts}
-              </Button>
-            </div>
+        <Container className="relative py-16 sm:py-20 lg:py-24">
+          <p className="coord">
+            {isHrHub ? projectKindLabel["own-product"] : "PRODUCT LAUNCH"}
+          </p>
+          <div className="mt-5">
+            <ProductStatusBadge status={product.status} />
           </div>
-          {isHrHub ? (
-            <ProductScreenshot
-              src={hrHubDashboard.src}
-              alt={hrHubDashboard.alt}
-              caption={hrHubDashboard.caption}
-              priority
-              sizes="(max-width: 1024px) 100vw, 640px"
-            />
-          ) : null}
+          <h1 className="mt-5 max-w-4xl text-4xl text-on-deep sm:text-6xl">
+            {product.name}
+          </h1>
+          <p className="mt-4 max-w-2xl text-lg text-deep-muted">
+            Централизирана система за управление на човешките ресурси и бизнес
+            процесите.
+          </p>
+          <p className="mt-5 max-w-2xl text-base leading-relaxed text-deep-muted">
+            {product.description}
+          </p>
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <Button href={inquireHref}>{ctaCopy.inquire}</Button>
+            <Button href={routes.products} variant="inverse">
+              {ctaCopy.allProducts}
+            </Button>
+          </div>
         </Container>
       </section>
 
@@ -86,20 +83,43 @@ export function ProductPageView({ product }: ProductPageViewProps) {
       {isHrHub ? (
         <section className="border-b border-border bg-navy-950">
           <Container className="py-14 sm:py-16 lg:py-20">
-            <p className="coord">APPLICATION SURFACE</p>
+            <p className="coord">MODULES</p>
             <h2 className="mt-4 max-w-3xl text-3xl text-foreground sm:text-4xl">
-              Табло
+              Текущи модули
             </h2>
             <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted">
-              {hrHubDashboard.description}
+              Показани са само модулите, които реално съществуват в текущия HR HUB
+              360 клиент.
             </p>
-            <div className="mt-10">
-              <ProductScreenshot
-                src={hrHubDashboard.src}
-                alt={hrHubDashboard.alt}
-                caption={hrHubDashboard.caption}
-                sizes="(max-width: 768px) 100vw, 1200px"
-              />
+            <ol className="mt-10 divide-y divide-border border-y border-border">
+              {hrHubVerifiedModules.map((screen, index) => (
+                <li
+                  key={screen.id}
+                  className="grid gap-2 py-5 sm:grid-cols-[4.5rem_minmax(0,1fr)] sm:items-baseline"
+                >
+                  <span className="font-display text-xl text-electric">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <h3 className="text-xl text-foreground">{screen.nav}</h3>
+                </li>
+              ))}
+            </ol>
+            <div className="mt-12">
+              <p className="coord">COMING SOON</p>
+              <h3 className="mt-4 text-2xl text-foreground">Предстоящи</h3>
+              <ul className="mt-6 divide-y divide-border border-y border-border">
+                {upcomingModules.map((item) => (
+                  <li
+                    key={item.title}
+                    className="flex flex-wrap items-baseline justify-between gap-3 py-5"
+                  >
+                    <span className="text-xl text-subtle">{item.title}</span>
+                    <span className="text-xs font-medium uppercase tracking-[0.1em] text-subtle">
+                      {item.note}
+                    </span>
+                  </li>
+                ))}
+              </ul>
             </div>
           </Container>
         </section>
@@ -108,51 +128,33 @@ export function ProductPageView({ product }: ProductPageViewProps) {
       {isHrHub ? (
         <section className="border-b border-border bg-white">
           <Container className="py-14 sm:py-16 lg:py-20">
-            <p className="coord">MODULES</p>
+            <p className="coord">APPLICATION SURFACE</p>
             <h2 className="mt-4 max-w-3xl text-3xl text-foreground sm:text-4xl">
-              Модули от HR HUB 360
+              Реални екрани
             </h2>
             <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted">
-              Изберете модул, за да видите реалния екран, заглавието и кратко
-              описание. Работни процеси и отчети още не са готови и не са
-              включени тук като налични екрани.
+              Четири екрана от демонстрационната среда: табло, служители, отпуски
+              и присъствия.
             </p>
             <div className="mt-10">
-              <HrHubShowcase />
+              <HrHubProof />
             </div>
           </Container>
         </section>
       ) : null}
 
-      {isHrHub ? (
-        <section className="border-b border-border bg-navy-950">
-          <Container className="py-14 sm:py-16 lg:py-20">
-            <p className="coord">SELECTED SCREENS</p>
-            <h2 className="mt-4 max-w-3xl text-3xl text-foreground sm:text-4xl">
-              Избрани екрани
+      {isHrHub && hrHubProject ? (
+        <section className="relative overflow-hidden border-b border-white/10 bg-deep">
+          <div className="blueprint-grid-deep pointer-events-none absolute inset-0" />
+          <Container className="relative py-14 sm:py-16 lg:py-20">
+            <p className="coord">ARCHITECTURE</p>
+            <h2 className="mt-4 text-3xl text-on-deep sm:text-4xl">
+              Архитектура
             </h2>
-            <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted">
-              Служители, договори и работно време показват най-ясно реалната
-              работна повърхност на системата.
+            <p className="mt-5 max-w-2xl text-base leading-relaxed text-deep-muted sm:text-lg">
+              Показани са само слоевете, които реално участват в текущия проект.
             </p>
-            <div className="mt-10 space-y-12">
-              {extraScreens.map((screen) => (
-                <article key={screen.id} className="space-y-4">
-                  <div className="max-w-2xl">
-                    <h3 className="text-2xl text-foreground">{screen.title}</h3>
-                    <p className="mt-2 text-base leading-relaxed text-muted">
-                      {screen.description}
-                    </p>
-                  </div>
-                  <ProductScreenshot
-                    src={screen.src}
-                    alt={screen.alt}
-                    caption={screen.caption}
-                    sizes="(max-width: 768px) 100vw, 1200px"
-                  />
-                </article>
-              ))}
-            </div>
+            <CaseStudyArchitecture layers={hrHubProject.architecture} />
           </Container>
         </section>
       ) : null}
@@ -201,7 +203,7 @@ export function ProductPageView({ product }: ProductPageViewProps) {
           </section>
         ) : null}
 
-        {currentCapabilities.length > 0 ? (
+        {!isHrHub && currentCapabilities.length > 0 ? (
           <section className="mt-16">
             <p className="coord">AVAILABLE</p>
             <h2 className="mt-4 text-3xl text-foreground sm:text-4xl">
@@ -231,7 +233,21 @@ export function ProductPageView({ product }: ProductPageViewProps) {
         ) : null}
 
         <section className="mt-16 grid gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]">
-          {upcomingCapabilities.length > 0 ? (
+          {isHrHub ? (
+            <div>
+              <p className="coord">CASE STUDY</p>
+              <h2 className="mt-4 text-3xl text-foreground">Инженерен казус</h2>
+              <p className="mt-4 max-w-xl text-base leading-relaxed text-muted">
+                Контекст, проблем, подход и същите реални екрани като инженерен
+                запис на разработката.
+              </p>
+              <div className="mt-8">
+                <Button href={projectPath("hr-hub-360")} variant="ghost">
+                  {ctaCopy.viewProject}
+                </Button>
+              </div>
+            </div>
+          ) : upcomingCapabilities.length > 0 ? (
             <div>
               <p className="coord">COMING SOON</p>
               <h2 className="mt-4 text-3xl text-foreground">Предстои</h2>
@@ -292,7 +308,12 @@ export function ProductPageView({ product }: ProductPageViewProps) {
           </div>
         </section>
       </Container>
-      <ContactCta />
+      <ContactCta
+        title="Имате подобен процес?"
+        description="Опишете как работите днес. Ще уточним дали HR HUB 360 или отделна система е правилният път."
+        ctaLabel={ctaCopy.discussSimilar}
+        ctaHref={inquireHref}
+      />
     </>
   );
 }

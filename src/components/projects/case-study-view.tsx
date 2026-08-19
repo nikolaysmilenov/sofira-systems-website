@@ -1,3 +1,4 @@
+import { HrHubProof } from "@/components/products/hr-hub-proof";
 import { CaseStudyArchitecture } from "@/components/projects/case-study-architecture";
 import { ContactCta } from "@/components/sections/contact-cta";
 import { Button } from "@/components/ui/button";
@@ -28,7 +29,9 @@ export function CaseStudyView({ project }: CaseStudyViewProps) {
             PROJECT / {project.index}
           </p>
           <p className="mt-5 font-display text-sm tracking-label text-cyan-bright">
-            {projectKindLabel[project.kind]}
+            {project.kind === "own-product"
+              ? `${projectKindLabel[project.kind]} / ${projectStatusLabel[project.status].toUpperCase()}`
+              : projectKindLabel[project.kind]}
           </p>
           <h1 className="mt-4 max-w-4xl text-4xl text-on-deep sm:text-6xl">
             {project.name}
@@ -53,45 +56,52 @@ export function CaseStudyView({ project }: CaseStudyViewProps) {
               <p className="font-display text-3xl text-electric">
                 {section.index}
               </p>
-              <div className="max-w-3xl">
-                <h2 className="text-3xl text-foreground sm:text-4xl">
-                  {section.title}
-                </h2>
-                <p className="mt-5 text-base leading-relaxed text-muted sm:text-lg">
-                  {project[section.field]}
-                </p>
-                {section.field === "system" && project.modules ? (
-                  <div className="mt-10">
-                    <p className="text-xs font-medium tracking-kicker text-subtle">
-                      Текущи модули
-                    </p>
-                    <ul className="mt-4 flex flex-wrap gap-2">
-                      {project.modules.current.map((item) => (
-                        <li
-                          key={item}
-                          className="rounded-full border border-border bg-white px-4 py-2 text-sm text-foreground"
-                        >
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                    {project.modules.upcoming && project.modules.upcoming.length > 0 ? (
-                      <div className="mt-8">
-                        <p className="text-xs font-medium tracking-kicker text-subtle">
-                          Предстоящи — още не са готови
-                        </p>
-                        <ul className="mt-4 flex flex-wrap gap-2">
-                          {project.modules.upcoming.map((item) => (
-                            <li
-                              key={item}
-                              className="rounded-full border border-border px-4 py-2 text-sm text-subtle"
-                            >
-                              {item}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    ) : null}
+              <div className="min-w-0">
+                <div className="max-w-3xl">
+                  <h2 className="text-3xl text-foreground sm:text-4xl">
+                    {section.title}
+                  </h2>
+                  <p className="mt-5 text-base leading-relaxed text-muted sm:text-lg">
+                    {project[section.field]}
+                  </p>
+                  {section.field === "system" && project.modules ? (
+                    <div className="mt-10">
+                      <p className="text-xs font-medium tracking-kicker text-subtle">
+                        Текущи модули
+                      </p>
+                      <ul className="mt-4 flex flex-wrap gap-2">
+                        {project.modules.current.map((item) => (
+                          <li
+                            key={item}
+                            className="rounded-full border border-border bg-white px-4 py-2 text-sm text-foreground"
+                          >
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                      {project.modules.upcoming && project.modules.upcoming.length > 0 ? (
+                        <div className="mt-8">
+                          <p className="text-xs font-medium tracking-kicker text-subtle">
+                            Предстоящи — още не са готови
+                          </p>
+                          <ul className="mt-4 flex flex-wrap gap-2">
+                            {project.modules.upcoming.map((item) => (
+                              <li
+                                key={item}
+                                className="rounded-full border border-border px-4 py-2 text-sm text-subtle"
+                              >
+                                {item}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ) : null}
+                    </div>
+                  ) : null}
+                </div>
+                {section.field === "system" && project.slug === "hr-hub-360" ? (
+                  <div className="mt-12">
+                    <HrHubProof />
                   </div>
                 ) : null}
               </div>
@@ -112,6 +122,12 @@ export function CaseStudyView({ project }: CaseStudyViewProps) {
               Показани са само слоевете, които реално участват в този проект.
             </p>
             <CaseStudyArchitecture layers={project.architecture} />
+            {project.slug === "stinger" ? (
+              <p className="mt-8 max-w-2xl text-sm leading-relaxed text-cyan-bright sm:text-base">
+                Signals Only — по подразбиране системата не изпраща реални
+                поръчки.
+              </p>
+            ) : null}
           </div>
         </Container>
       </section>
@@ -126,7 +142,9 @@ export function CaseStudyView({ project }: CaseStudyViewProps) {
               Статус
             </h2>
             <p className="mt-3 text-sm font-medium tracking-normal text-electric">
-              {projectStatusLabel[project.status]}
+              {project.kind === "own-product"
+                ? `${projectKindLabel[project.kind]} / ${projectStatusLabel[project.status].toUpperCase()}`
+                : projectStatusLabel[project.status]}
             </p>
             <p className="mt-5 text-base leading-relaxed text-muted sm:text-lg">
               {project.result}

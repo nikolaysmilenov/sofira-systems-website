@@ -131,4 +131,51 @@ export const hrHubScreens: HrHubScreen[] = [
 
 export const hrHubDashboard = hrHubScreens[0];
 
+const verifiedModuleIds = [
+  "tablo",
+  "sluzhiteli",
+  "dogovori",
+  "dokumenti",
+  "otpuski",
+  "prisastviya",
+  "vaznagrazhdeniya",
+  "podbor",
+  "obucheniya",
+  "otsenki",
+  "aktivi",
+] as const;
+
+export const hrHubVerifiedModules = verifiedModuleIds.map((id) => {
+  const screen = hrHubScreens.find((item) => item.id === id);
+  if (!screen) {
+    throw new Error(`Missing verified HR HUB module: ${id}`);
+  }
+  return screen;
+});
+
 export const hrHubFeaturedScreens = hrHubScreens.filter((item) => item.featured);
+
+export type HrHubProofScreen = HrHubScreen & {
+  process: string;
+};
+
+const proofIds = ["tablo", "sluzhiteli", "otpuski", "prisastviya"] as const;
+
+const proofProcess: Record<(typeof proofIds)[number], string> = {
+  tablo: "Общ преглед на организацията и състоянието на модулите.",
+  sluzhiteli: "Централизирано управление на служителите и свързаната информация.",
+  otpuski: "Управление на заявления и отсъствия.",
+  prisastviya: "Работно време и присъствия.",
+};
+
+export const hrHubProofScreens: HrHubProofScreen[] = proofIds.map((id) => {
+  const screen = hrHubScreens.find((item) => item.id === id);
+  if (!screen) {
+    throw new Error(`Missing verified HR HUB screen: ${id}`);
+  }
+
+  return { ...screen, process: proofProcess[id] };
+});
+
+export const hrHubProofPrimary = hrHubProofScreens[0];
+export const hrHubProofSupporting = hrHubProofScreens.slice(1);

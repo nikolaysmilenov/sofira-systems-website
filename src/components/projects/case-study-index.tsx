@@ -67,7 +67,9 @@ function ProjectIndexRow({ project }: { project: Project }) {
         <div className="max-w-3xl">
           <p className="coord">PROJECT / {project.index}</p>
           <p className="mt-4 font-display text-sm tracking-label text-electric">
-            {projectKindLabel[project.kind]}
+            {project.kind === "own-product"
+              ? `${projectKindLabel[project.kind]} / ${projectStatusLabel[project.status].toUpperCase()}`
+              : projectKindLabel[project.kind]}
           </p>
           <h3 className="mt-3 text-3xl text-foreground sm:text-5xl">
             {project.name}
@@ -75,6 +77,12 @@ function ProjectIndexRow({ project }: { project: Project }) {
           <p className="mt-4 text-base leading-relaxed text-muted sm:text-lg">
             {project.summary}
           </p>
+          {project.slug === "stinger" ? (
+            <p className="mt-4 text-sm leading-relaxed text-subtle">
+              Signals Only — по подразбиране системата не изпраща реални
+              поръчки.
+            </p>
+          ) : null}
           <p className="mt-4 text-xs font-medium tracking-normal text-subtle">
             {projectStatusLabel[project.status]}
           </p>

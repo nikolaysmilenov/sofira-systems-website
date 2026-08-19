@@ -122,7 +122,7 @@ export const products: Product[] = [
       screenshots: [
         "/images/products/hr-hub-360/tablo.webp",
         "/images/products/hr-hub-360/sluzhiteli.webp",
-        "/images/products/hr-hub-360/dogovori.webp",
+        "/images/products/hr-hub-360/otpuski.webp",
         "/images/products/hr-hub-360/prisastviya.webp",
       ],
     },
