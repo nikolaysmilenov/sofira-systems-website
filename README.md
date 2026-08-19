@@ -1,6 +1,6 @@
 # SOFIRA SYSTEMS
 
-Официален уебсайт на [SOFIRA SYSTEMS](https://sofirasystems.com).
+Официален уебсайт на [SOFIRA SYSTEMS](https://www.sofirasystems.com).
 
 Сайтът е изграден с Next.js, TypeScript и Tailwind CSS. Езикът на съдържанието е български.
 
@@ -26,7 +26,7 @@ npm run build
 Копирайте `.env.example` към `.env.local` при нужда.
 
 ```text
-NEXT_PUBLIC_SITE_URL=https://sofirasystems.com
+NEXT_PUBLIC_SITE_URL=https://www.sofirasystems.com
 RESEND_API_KEY=
 CONTACT_FROM_EMAIL=
 CONTACT_TO_EMAIL=
@@ -39,9 +39,9 @@ GEMINI_MODEL=gemini-2.5-flash
 
 ## Публикуване
 
-Проектът е Next.js приложение и е готов за хостинг на Vercel. Официалният домейн е [sofirasystems.com](https://sofirasystems.com).
+Проектът е Next.js приложение и е готов за хостинг на Vercel. Официалният домейн е [www.sofirasystems.com](https://www.sofirasystems.com).
 
-Преди публикуване задайте `NEXT_PUBLIC_SITE_URL=https://sofirasystems.com` и сървърните променливи за Resend. DNS и връзката на домейна се правят в хостинг акаунта.
+Преди публикуване задайте `NEXT_PUBLIC_SITE_URL=https://www.sofirasystems.com` и сървърните променливи за Resend. DNS и връзката на домейна се правят в хостинг акаунта.
 
 
 ## Структура

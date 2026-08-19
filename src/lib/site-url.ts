@@ -1,4 +1,4 @@
-const DEFAULT_SITE_URL = "https://sofirasystems.com";
+const DEFAULT_SITE_URL = "https://www.sofirasystems.com";
 
 function normalizeUrl(value: string): string {
   return value.trim().replace(/\/+$/, "");
