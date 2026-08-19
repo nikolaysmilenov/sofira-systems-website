@@ -1,5 +1,6 @@
 import { HrHubProof } from "@/components/products/hr-hub-proof";
 import { CaseStudyArchitecture } from "@/components/projects/case-study-architecture";
+import { SofiraPlatformProof } from "@/components/projects/sofira-platform-proof";
 import { ContactCta } from "@/components/sections/contact-cta";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
@@ -20,6 +21,8 @@ const sections = [
 ] as const;
 
 export function CaseStudyView({ project }: CaseStudyViewProps) {
+  const isSofiraPlatform = project.slug === "sofira-systems";
+
   return (
     <>
       <section className="relative overflow-hidden border-b border-white/10 bg-deep">
@@ -110,11 +113,32 @@ export function CaseStudyView({ project }: CaseStudyViewProps) {
         );
       })}
 
+      {isSofiraPlatform ? (
+        <section className="border-b border-border bg-white">
+          <Container className="grid gap-6 py-16 sm:py-20 lg:grid-cols-[7rem_minmax(0,1fr)] lg:gap-12">
+            <p className="font-display text-3xl text-electric">05</p>
+            <div className="min-w-0">
+              <p className="coord">REAL PRODUCT PROOF</p>
+              <h2 className="mt-4 text-3xl text-foreground sm:text-4xl">
+                Реални екрани
+              </h2>
+              <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">
+                Екрани от публичната платформа, които показват навигацията,
+                представянето на проекти и пътя към първоначално запитване.
+              </p>
+              <div className="mt-12">
+                <SofiraPlatformProof />
+              </div>
+            </div>
+          </Container>
+        </section>
+      ) : null}
+
       <section className="relative overflow-hidden border-b border-white/10 bg-deep">
         <div className="blueprint-grid-deep pointer-events-none absolute inset-0" />
         <Container className="relative grid gap-6 py-16 sm:py-20 lg:grid-cols-[7rem_minmax(0,1fr)] lg:gap-12">
           <p className="font-display text-3xl text-cyan-bright">
-            05
+            {isSofiraPlatform ? "06" : "05"}
           </p>
           <div>
             <h2 className="text-3xl text-on-deep sm:text-4xl">Архитектура</h2>
@@ -135,7 +159,7 @@ export function CaseStudyView({ project }: CaseStudyViewProps) {
       <section className="border-b border-border bg-navy-950">
         <Container className="grid gap-6 py-16 sm:py-20 lg:grid-cols-[7rem_minmax(0,1fr)] lg:gap-12">
           <p className="font-display text-3xl text-electric">
-            06
+            {isSofiraPlatform ? "07" : "06"}
           </p>
           <div className="max-w-3xl">
             <h2 className="text-3xl text-foreground sm:text-4xl">

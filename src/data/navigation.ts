@@ -6,6 +6,8 @@ export const routes = {
   products: "/produkti",
   hrHub360: "/produkti/hr-hub-360",
   projects: "/proekti",
+  useCases: "/sluchai-na-upotreba",
+  resources: "/resursi",
   technology: "/tehnologii",
   about: "/za-nas",
   contact: "/kontakt",
@@ -40,7 +42,11 @@ export const mainNav: NavItem[] = [
   { href: routes.contact, label: "Контакт" },
 ];
 
-export const footerNav: NavItem[] = mainNav;
+export const footerNav: NavItem[] = [
+  ...mainNav,
+  { href: routes.useCases, label: "Случаи" },
+  { href: routes.resources, label: "Ресурси" },
+];
 
 export const legalNav: NavItem[] = [
   { href: routes.privacy, label: "Поверителност" },

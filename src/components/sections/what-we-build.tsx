@@ -48,9 +48,14 @@ export function WhatWeBuild() {
             общи обещания.
           </p>
         </div>
-        <Button href={routes.services} variant="secondary" className="w-fit">
-          {ctaCopy.viewServices}
-        </Button>
+        <div className="flex flex-wrap gap-3">
+          <Button href={routes.services} variant="secondary" className="w-fit">
+            {ctaCopy.viewServices}
+          </Button>
+          <Button href={routes.useCases} variant="ghost" className="w-fit">
+            Вижте случаи
+          </Button>
+        </div>
       </div>
 
       <ol className="mt-12 divide-y divide-border border-y border-border">

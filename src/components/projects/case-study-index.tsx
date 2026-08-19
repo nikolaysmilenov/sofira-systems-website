@@ -21,6 +21,18 @@ export function CaseStudyIndex() {
         description="Тук показваме реални проекти на SOFIRA SYSTEMS — със структура, подход и статус. Без измислени клиенти, метрики или резултати."
       />
 
+      <div className="border-b border-border bg-white">
+        <Container className="flex flex-col gap-5 py-8 sm:flex-row sm:items-center sm:justify-between sm:py-10">
+          <p className="max-w-2xl text-base leading-relaxed text-muted">
+            Имате подобен процес, но не сте сигурни какъв тип система е
+            подходяща?
+          </p>
+          <Button href={routes.useCases} variant="ghost" className="w-fit">
+            Вижте случаи
+          </Button>
+        </Container>
+      </div>
+
       {projectIndexGroups.map((group) => {
         const items = projectsInGroup(group.id);
         if (items.length === 0) {

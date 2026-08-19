@@ -110,6 +110,8 @@ export type ArchitectureLayerId =
   | "ui"
   | "desktop"
   | "api"
+  | "email"
+  | "hosting"
   | "database"
   | "access-control"
   | "market-data"
